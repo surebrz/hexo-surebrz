@@ -1,17 +1,23 @@
+#author 
+author: 烁灵SureBrz
+
+#description 
+description: 嘭！
+
 # when running hexo in a subdirectory (e.g. domain.tld/blog), remove leading slashes ( "/archives" -> "archives" )
 menu:
   home: /
   #categories: /categories
   #about: /about
   archives: /archives
-  tags: /tags
+  #tags: /tags
   #commonweal: /404.html
 
 # Place your favicon.ico to /source directory.
 favicon: /favicon.ico
 
 # Set default keywords (Use a comma to separate)
-keywords: "Hexo,next"
+keywords: "surebrz,blog"
 
 # Set rss to false to disable feed link.
 # Leave rss as empty to use site's feed link.
