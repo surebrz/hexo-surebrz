@@ -1,6 +1,7 @@
 title: 准备一个node端来控制我的树莓派播放音乐
 date: 2015-09-03 09:25:07
 tags: nodejs
+categories: 折腾
 ---
 
 # 先用这里记录下需要的东西：
