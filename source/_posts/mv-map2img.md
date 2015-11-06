@@ -1,7 +1,7 @@
 title: 意义不明
 date: 2015-10-29 20:05:52
-tags:js
-categories:RMMV
+tags: js
+categories: RMMV
 ---
 
 
