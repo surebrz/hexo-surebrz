@@ -1,6 +1,6 @@
 title: ADT导入FacebookSDK
 date: 2015-11-10 10:15:45
-tags: SDK, Android
+tags: [SDK,Android]
 categories: 笔记
 ---
 
