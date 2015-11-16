@@ -66,6 +66,13 @@ pagination_dir: page
 ## Themes: http://hexo.io/themes/
 theme: next 
 
+# 友链
+# title, chinese available
+links_title: 邻家的小屋
+# links
+links:
+  Yoyoyo.me: http://blog.yoyoyo.me
+
 # 多说
 duoshuo_shortname: surebrz
 

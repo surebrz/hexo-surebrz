@@ -8,8 +8,8 @@ description: 嘭！
 menu:
   home: /
   categories: /categories
-  tags: /tags
-  archives: /archives
+  #tags: /tags
+  #archives: /archives
   about: /about
   #commonweal: /404.html
 
@@ -43,15 +43,15 @@ mathjax:
 
 
 # Schemes
-#scheme: Mist
+scheme: Mist
 
 
 # Sidebar, available value:
 #  - post    expand on posts automatically. Default.
 #  - always  expand for all pages automatically
 #  - hide    expand only when click on the sidebar toggle icon.
-sidebar: post
-#sidebar: always
+#sidebar: post
+sidebar: always
 #sidebar: hide
 
 
