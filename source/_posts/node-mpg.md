@@ -4,7 +4,9 @@ tags: nodejs
 categories: 折腾
 ---
 
-# 先用这里记录下需要的东西：
+预备用手机控制树莓派播放音乐列表，先用这里记录下需要的东西。
+
+<!--more-->
 
 ## screen命令
 * screen -S yourname -> 新建一个叫yourname的session

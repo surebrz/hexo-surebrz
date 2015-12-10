@@ -3,8 +3,9 @@ date: 2015-11-06 19:53:39
 tags: algorithm
 categories: 笔记
 ---
-## 持续更新好了……
+持续更新好了……
 
+<!--more-->
 
 1. 取随机正负(ruby)
 

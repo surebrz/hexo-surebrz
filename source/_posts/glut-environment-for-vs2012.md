@@ -4,6 +4,10 @@ tags: [opengl, 图形学]
 categories: 笔记
 ---
 
+开始补图形学相关姿势，本科未开课甚是遗憾。
+
+<!--more-->
+
 ## glut下载
 
 - 从[这里](https://www.opengl.org/resources/libraries/glut/glut_downloads.php)下载glut环境需要的文件，我下载了[这个](https://www.opengl.org/resources/libraries/glut/glutdlls37beta.zip)编译好的版本。

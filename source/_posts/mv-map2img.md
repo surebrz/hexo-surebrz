@@ -4,6 +4,9 @@ tags: [js,rmmv]
 categories: 成品
 ---
 
+拿到mv后写的第一个插件……导出地图为png图片，需要修改chrome打开参数以支持读取本地文件。
+
+<!--more-->
 
 	/*:
 	 * @plugindesc 不是很优雅的导出实际地图png，请用chrome增加参数--disable-web-security --allow-file-access-from-files后打开index.html

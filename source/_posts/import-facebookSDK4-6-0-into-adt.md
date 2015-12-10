@@ -6,6 +6,8 @@ categories: 笔记
 
 一次FacebookSDK折腾笔记，惯例写折腾过程，非教程。
 
+<!--more-->
+
 1. 导入Eclipse
     - Import -> facebook
 
