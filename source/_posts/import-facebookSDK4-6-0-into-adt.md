@@ -1,12 +1,14 @@
-title: ADT导入FacebookSDK
+title: ADT导入FacebookSDK4.6.0
 date: 2015-11-10 10:15:45
 tags: [SDK,Android]
 categories: 笔记
 ---
 
-一次FacebookSDK折腾笔记，惯例写折腾过程，非教程。
+一次FacebookSDK4.6.0折腾笔记，惯例写折腾过程，非教程。
 
 <!--more-->
+
+4.6.0版本的sdk是Android Studio项目格式，为了导入Eclipse做了以下步骤：
 
 1. 导入Eclipse
     - Import -> facebook
