@@ -21,7 +21,7 @@ categories: 笔记
 
 发现未引入v4-support库。
 
-# 解决
+## 解决
 
 使用Eclipse功能导入android support library：
 
