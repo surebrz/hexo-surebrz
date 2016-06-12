@@ -1,12 +1,12 @@
 {
   "name": "hexo-site",
-  "version": "0.0.0",
+  "version": "2.1.1",
   "private": true,
   "hexo": {
-    "version": "3.1.1"
+    "version": "3.2.0"
   },
   "dependencies": {
-    "hexo": "^3.1.0",
+    "hexo": "^3.2.0",
     "hexo-deployer-git": "0.0.4",
     "hexo-generator-archive": "^0.1.2",
     "hexo-generator-category": "^0.1.2",
@@ -15,6 +15,8 @@
     "hexo-renderer-ejs": "^0.1.0",
     "hexo-renderer-marked": "^0.2.4",
     "hexo-renderer-stylus": "^0.3.0",
-    "hexo-server": "^0.1.2"
+    "hexo-server": "^0.1.2",
+    "install": "^0.8.1",
+    "npm": "^3.9.5"
   }
 }
