@@ -31,6 +31,10 @@ FILENAME : 图片名
 =end
 module Sl_Settings
   module Ani_View
+
+    SPD = 1
+    FLN = "anim"
+
     GetPrivateProfileString = Win32API.new('kernel32', 'GetPrivateProfileString', 'ppppip', 'i')
     def get_info(key, default_value)
       buffer = [].pack('x256')
@@ -70,7 +74,7 @@ module SceneManager
   end
 end
 class Scene_Ani < Scene_Base
-  def initialize(row, col, speed = 1, filename = Sl_Settings::Ani_View::FLN)
+  def initialize(row, col, speed = Sl_Settings::Ani_View::SPD, filename = Sl_Settings::Ani_View::FLN)
     super()
     @row = row
     @col = col
