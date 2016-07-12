@@ -21,31 +21,31 @@ categories: 笔记
 
 3. 修改 **cocos2dx** 目录中的 *Android.md* 文件
 
-    1. 将
+    将
 
-        ```
-        LOCAL_WHOLE_STATIC_LIBRARIES := cocos_libpng_static
-        ```
+    ```
+    LOCAL_WHOLE_STATIC_LIBRARIES := cocos_libpng_static
+    ```
 
-        改为
+    改为
 
-        ```
-        LOCAL_WHOLE_STATIC_LIBRARIES := cocos_libzlib_static
-        LOCAL_WHOLE_STATIC_LIBRARIES += cocos_libpng_static
-        ```
+    ```
+    LOCAL_WHOLE_STATIC_LIBRARIES := cocos_libzlib_static
+    LOCAL_WHOLE_STATIC_LIBRARIES += cocos_libpng_static
+    ```
 
-   2. 将
+   将
 
-        ```
-        $(call import-module,libpng)
-        ```
+    ```
+    $(call import-module,libpng)
+    ```
 
-        改为
+    改为
 
-        ```
-        $(call import-module,libzlib)
-        $(call import-module,libpng)
-        ```
+    ```
+    $(call import-module,libzlib)
+    $(call import-module,libpng)
+    ```
 
 4. 打包完毕查看libpng版本
 
