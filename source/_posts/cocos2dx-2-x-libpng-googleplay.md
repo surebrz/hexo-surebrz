@@ -6,6 +6,8 @@ categories: 笔记
 
 谷歌近日对使用低版本libpng库的应用发出下架警告：
 
+![图片](http://ww4.sinaimg.cn/mw690/a94a86cbjw1f5qyi97j5hj20tc0og76x.jpg)
+
 <!--more-->
 工地使用的quickcocos2.2.3版本，对于cocos2dx2.x版本修复方案如下：
 
