@@ -59,6 +59,8 @@ php使用lnmp一键安装脚本安装，web目录位于
     chroot_list_enable=YES
     chroot_list_file=/etc/vsftpd.chroot_list
 
+修改 *chroot_list_file=/etc/vsftpd.chroot_list* 文件，加入 *ftpuser* 。文件格式为用户名列表，一行一个用户名
+
 # 测试
 
 ## 使用ftpuser登录
