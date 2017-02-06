@@ -42,10 +42,10 @@ More info: [Deployment](http://hexo.io/docs/deployment.html)
 
 不补充点东西换台电脑咱就不会写博了orz
 
-安装hexo:
+安装hexo3.1.1:
 
 ``` bash
-$ npm install hexo -g
+$ npm install hexo@3.1.1 -g
 ```
 
 clone项目:
