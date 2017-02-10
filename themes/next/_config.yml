@@ -8,9 +8,10 @@ description: 嘭！
 menu:
   home: /
   categories: /categories
-  #tags: /tags
+  tags: /tags
   #archives: /archives
   about: /about
+  fantasy-links: /fantasy-links
   #commonweal: /404.html
 
 # Place your favicon.ico to /source directory.
