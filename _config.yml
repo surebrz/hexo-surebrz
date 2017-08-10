@@ -73,9 +73,6 @@ links_title: 邻家的小屋
 links:
   三途河畔: http://blog.yoyoyo.me
 
-# 多说
-duoshuo_shortname: surebrz
-
 # Deployment
 ## Docs: http://hexo.io/docs/deployment.html
 deploy:
