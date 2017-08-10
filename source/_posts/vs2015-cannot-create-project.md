@@ -22,10 +22,14 @@ VS2015无法建立新项目，点击确定会反复弹出创建工程窗口：
 
 - 在VS2015开发人员命令提示（开始-程序-visual studio 2015-visual studio tools下）中输入
 
-    ```devenv /InstallVSTemplates```
+    ``` 
+    devenv /InstallVSTemplates 
+    ```
 
 - 执行成功后输入
 
-    ```devenv /Setup```
+    ``` 
+    devenv /Setup
+    ```
 
 之后再打开就可以成功创建了。

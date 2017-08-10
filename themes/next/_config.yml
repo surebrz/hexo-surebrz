@@ -48,8 +48,8 @@ index_with_subtitle: false
 menu:
   home: /
   categories: /categories/
-  archives: /archives/
-  tags: /tags/
+  #archives: /archives/
+  #tags: /tags/
   #sitemap: /sitemap.xml
   #commonweal: /404/
   about: /about
@@ -131,7 +131,7 @@ social_icons:
 # Sidebar Avatar
 # in theme directory(source/images): /images/avatar.jpg
 # in site  directory(source/uploads): /uploads/avatar.jpg
-#avatar:
+avatar: /images/default_avatar.jpg
 
 # Table Of Contents in the Sidebar
 toc:
