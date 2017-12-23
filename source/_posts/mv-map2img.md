@@ -1,6 +1,6 @@
 title: 意义不明
 date: 2015-10-29 20:05:52
-tags: [js,rmmv]
+tags: [javascript,rmmv]
 categories: 成品
 ---
 

@@ -1,6 +1,6 @@
 title: cocos2dx-js显示/隐藏左下角fps信息
 date: 2016-07-15 21:15:01
-tags: [cocos2dx,js]
+tags: [cocos2dx,javascript]
 categories: 笔记
 ---
 
