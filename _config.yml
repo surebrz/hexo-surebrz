@@ -77,4 +77,7 @@ links:
 ## Docs: http://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: https://github.com/surebrz/surebrz.github.io.git
+  repo: git@github.com:surebrz/surebrz.github.io.git
+  branch: master
+  message: commit new article
+
