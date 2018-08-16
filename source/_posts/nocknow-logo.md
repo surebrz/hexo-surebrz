@@ -1,7 +1,7 @@
 title: 脑壳LOGO
 date: 2017-02-06 14:07:09
-tags: [html]
-categories: 成品
+tags: [html，javascript]
+categories: HTML
 ---
 
 脑壳logo：

@@ -1,7 +1,7 @@
 title: docker实、实验报告......
 date: 2017-02-06 11:50:42
-tags: [docker]
-categories: 笔记
+tags: [docker,笔记]
+categories: Docker
 ---
 
 TAT以下是折腾docker折腾quick-server0.4.0的经历，而非过程

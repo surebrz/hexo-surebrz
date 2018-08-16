@@ -1,7 +1,7 @@
 title: 使用web端来控制我的树莓派播放音乐
 date: 2015-09-03 09:25:07
-tags: [nodejs,php]
-categories: 折腾
+tags: [nodejs,php,树莓派]
+categories: 树莓派
 ---
 
 web端控制树莓派播放音乐，PHP+NodeJS+mpg123，粗糙版。实现后还可以做个app什么的。

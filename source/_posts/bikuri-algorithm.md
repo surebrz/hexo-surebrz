@@ -1,6 +1,6 @@
 title: 机智的算法
 date: 2015-11-06 19:53:39
-tags: algorithm
+tags: [算法]
 categories: 笔记
 ---
 持续更新好了……

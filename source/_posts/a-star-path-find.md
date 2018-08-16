@@ -1,7 +1,7 @@
 title: 从前的一个A*
 date: 2017-02-06 12:01:25
-tags: [ruby, A*]
-categories: 成品
+tags: [ruby, A*, 算法]
+categories: Ruby
 ---
 
 以前的一个a*练习，搬过来凑个数……

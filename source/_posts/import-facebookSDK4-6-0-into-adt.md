@@ -1,7 +1,7 @@
 title: ADT导入FacebookSDK4.6.0
 date: 2015-11-10 10:15:45
 tags: [SDK,Android]
-categories: 笔记
+categories: Android
 ---
 
 一次FacebookSDK4.6.0折腾笔记，惯例写折腾过程，非教程。

@@ -1,7 +1,7 @@
 title: RMVA序列帧动画查看工具
 date: 2016-06-08 12:10:38
 tags: [ruby,rmva]
-categories: 成品
+categories: RPG Maker
 ---
 方便查看一整张大图型序列帧动画的工具
 <!--more-->

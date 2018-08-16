@@ -1,7 +1,7 @@
 title: Cocos DrawNode绘制实心圆
 date: 2017-12-23 11:36:10
 tags: [javascript,cocos2dx]
-categories: 成品
+categories: Cocos2d-X
 ---
 
 原 cc.DrawNode 的 *drawCircle* 方法绘制的是空心圆，而 *drawDot* 方法绘制的是指定 radius 的矩形，这里扩展 cc.DrawNode ，绘制实心圆。

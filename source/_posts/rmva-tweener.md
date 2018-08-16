@@ -1,7 +1,7 @@
 title: 【RMVA】缓动工具方法移植
 date: 2018-07-17 10:26:19
 tags: [ruby,rmva]
-categories: 成品
+categories: RPG Maker
 ---
 
 ## 预览

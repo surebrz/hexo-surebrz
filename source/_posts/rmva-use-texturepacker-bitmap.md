@@ -1,7 +1,7 @@
 title: RMVA 使用TexturePacker打包的图集
 date: 2016-05-13 10:03:52
 tags: [ruby,rmva]
-categories: 成品
+categories: RPG Maker
 ---
 
 试着读取tp图集，对旋转后的图片没有什么好的还原思路，bitmap没办法旋转，目前是创建精灵然后旋转，不建议勾选。

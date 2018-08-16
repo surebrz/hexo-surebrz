@@ -1,7 +1,7 @@
 title: RMVA 设置移动直线
 date: 2015-12-17 21:47:12
 tags: [ruby,rmva]
-categories: 成品
+categories: RPG Maker
 ---
 沿直线向指定坐标移动。图形学作业……使用Bresenham直线算法计算直线并按其移动。
 <!--more-->

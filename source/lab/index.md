@@ -4,7 +4,7 @@ date: 2017-02-10 14:40:01
 
 # 乱七八糟的零碎练习
 
-- [Ball](http://www.surebrz.com/ball)
+- [Ball](http://www.surebrz.com/origin/ball)
 说明：打球游戏，帧同步网游练习
 
 - [Tetris](http://www.nocknow.com/tetris/)

@@ -1,7 +1,7 @@
 title: 简单像素脸图
 date: 2017-02-06 14:16:45
-tags: [javascript, html]
-categories: 成品
+tags: [javascript,html]
+categories: HTML
 ---
 
 利用对称的随机点形成脸图/o\

@@ -1,7 +1,7 @@
 title: 【RMMV插件】整队时移除队员
 date: 2016-05-05 19:01:07
 tags: [javascript,rmmv]
-categories: 成品
+categories: RPG Maker
 ---
 
 # 功能

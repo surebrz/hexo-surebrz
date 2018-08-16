@@ -1,7 +1,7 @@
 title: 转换shift_jis文件名乱码脚本
 date: 2016-07-17 11:40:54
-tags: [ruby]
-categories: [工具脚本]
+tags: [ruby,工具脚本]
+categories: Ruby
 ---
 
 转换日站下载的文件shift_jis编码文件名乱码。

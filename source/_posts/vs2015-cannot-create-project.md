@@ -1,7 +1,7 @@
 title: 解决VS2015无法创建新项目问题
 date: 2017-08-01 14:44:46
 tags: [ide]
-categories: [笔记]
+categories: 笔记
 ---
 
 ## 问题

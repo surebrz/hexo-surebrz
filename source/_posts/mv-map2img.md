@@ -1,7 +1,7 @@
 title: 意义不明
 date: 2015-10-29 20:05:52
 tags: [javascript,rmmv]
-categories: 成品
+categories: RPG Maker
 ---
 
 拿到mv后写的第一个插件……导出地图为png图片，需要修改chrome打开参数以支持读取本地文件。

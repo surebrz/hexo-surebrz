@@ -1,7 +1,7 @@
 title: cocos2dx-2.x解决GooglePlay警告的libpng版本问题
 date: 2016-07-12 10:56:42
 tags: [cocos2dx]
-categories: 笔记
+categories: Cocos2d-X
 ---
 
 谷歌近日对使用低版本libpng库的应用发出下架警告：

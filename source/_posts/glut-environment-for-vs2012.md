@@ -1,7 +1,7 @@
 title: VS2012的glut环境配置
 date: 2015-12-06 21:50:48
-tags: [opengl, 图形学]
-categories: 笔记
+tags: [opengl,图形学]
+categories: OpenGL
 ---
 
 开始补图形学相关姿势，本科未开课甚是遗憾。

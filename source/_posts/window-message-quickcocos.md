@@ -1,7 +1,7 @@
 title: 【未完成】Window_Message(雾。。。
 date: 2017-02-06 11:39:35
 tags: [lua,quick-cocos,javascript,cocos-html]
-categories: 成品
+categories: JavaScript
 ---
 
 仿制RM的Window_Message。富文本模块。
