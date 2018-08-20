@@ -46,8 +46,8 @@ Shader "Custom/NewSurfaceShader"
 			#pragma fragment frag
 			#pragma multi_compile _ PIXELSNAP_ON       //告诉Unity编译不同版本的Shader,这里和后面vert中的PIXELSNAP_ON对应
 			#include "UnityCG.cginc"
-            sampler2D _MainTex;
-            float4 _MainTex_TexelSize;
+			sampler2D _MainTex;
+			float4 _MainTex_TexelSize;
 			
 			fixed4 _Color;
 			
@@ -80,10 +80,10 @@ Shader "Custom/NewSurfaceShader"
  
 			fixed4 SampleSpriteTexture (float2 uv)
 			{
-                fixed4 color = tex2D (_MainTex, uv);
+				fixed4 color = tex2D (_MainTex, uv);
 				return color;
 			}
-            
+			
 
 			fixed4 frag(v2f IN) : SV_Target
 			{
@@ -92,21 +92,21 @@ Shader "Custom/NewSurfaceShader"
 				fixed4 _OutlineColor = fixed4(1,1,1,1);
 				float _LineWidth = 2;
 			
-                fixed4 c = SampleSpriteTexture (IN.texcoord) * IN.color;
-                c.rgb *= c.a;
-                float isOut = step(abs(1/_LineWidth),c.a);
-                if(isOut != 0)
-                {
-                    fixed4 pixelUp = tex2D(_MainTex, IN.texcoord + fixed2(0, _MainTex_TexelSize.y*_CheckRange));  
-                    fixed4 pixelDown = tex2D(_MainTex, IN.texcoord - fixed2(0, _MainTex_TexelSize.y*_CheckRange));  
-                    fixed4 pixelRight = tex2D(_MainTex, IN.texcoord + fixed2(_MainTex_TexelSize.x*_CheckRange, 0));  
-                    fixed4 pixelLeft = tex2D(_MainTex, IN.texcoord - fixed2(_MainTex_TexelSize.x*_CheckRange, 0));  
-                    float bOut = step((1-_CheckAccuracy),pixelUp.a*pixelDown.a*pixelRight.a*pixelLeft.a);
-                    c = lerp(_OutlineColor,c,bOut);
-                    return c;
-                }
-                return c;
-                
+				fixed4 c = SampleSpriteTexture (IN.texcoord) * IN.color;
+				c.rgb *= c.a;
+				float isOut = step(abs(1/_LineWidth),c.a);
+				if(isOut != 0)
+				{
+					fixed4 pixelUp = tex2D(_MainTex, IN.texcoord + fixed2(0, _MainTex_TexelSize.y*_CheckRange));  
+					fixed4 pixelDown = tex2D(_MainTex, IN.texcoord - fixed2(0, _MainTex_TexelSize.y*_CheckRange));  
+					fixed4 pixelRight = tex2D(_MainTex, IN.texcoord + fixed2(_MainTex_TexelSize.x*_CheckRange, 0));  
+					fixed4 pixelLeft = tex2D(_MainTex, IN.texcoord - fixed2(_MainTex_TexelSize.x*_CheckRange, 0));  
+					float bOut = step((1-_CheckAccuracy),pixelUp.a*pixelDown.a*pixelRight.a*pixelLeft.a);
+					c = lerp(_OutlineColor,c,bOut);
+					return c;
+				}
+				return c;
+				
 			}
 		ENDCG
 		}
