@@ -1,0 +1,1 @@
+[{"__type__":"cc.SpriteFrame","content":{"name":"survivor-idle_0","texture":"bbUqtoVTND3Lmm1f1KBUtG","rect":[18,20,98,114],"offset":[1,0.5],"originalSize":[132,155]}},{"__type__":"cc.AnimationClip","_name":"feet_idle","_duration":0.016666666666666666,"curveData":{"comps":{"cc.Sprite":{"spriteFrame":[{"frame":0,"value":{"__uuid__":"66pD+8ZmpBFJSxcH+6agkR"}}]}}}}]
