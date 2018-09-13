@@ -1,12 +1,12 @@
 title: Unity擦除Tilemap上的图块后cellBounds大小未改变的解决方法
 date: 2018-09-13 11:28:06
-tags: [Unity]
-categories: Unity
+tags: [Unity3D]
+categories: Unity3D
 ---
 
 # 问题
 
-试用 Tilemap 取地图大小时发现在地图上绘制图块后，就算擦掉图块，Grid 的 cellBounds 大小也会一直保留被擦掉的图块占用的部分。
+试用原生 Tilemap 取地图大小时发现在地图上绘制图块后，就算擦掉图块，Grid 的 cellBounds 大小也会一直保留被擦掉的图块占用的部分。
 
 # 原因
 
