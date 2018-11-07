@@ -1,4 +1,4 @@
-title: U3D自用2D像素图描边Shader
+title: Unity自用2D像素图描边Shader
 date: 2018-08-20 13:05:59
 tags: [shader,Unity]
 categories: Unity3D
