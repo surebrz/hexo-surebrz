@@ -2,16 +2,13 @@ title: 实验室
 date: 2017-02-10 14:40:01
 ---
 
-# 乱七八糟的零碎练习
+# 一些零碎练习
 
-- [Ball](http://www.surebrz.com/origin/ball)
-说明：打球游戏，帧同步网游练习
+- [Missile Command](https://github.com/surevision/Missile_Command_Challenge)
+说明 《Missile Command 导弹指令》游戏复刻，GameDev论坛挑战。
 
 - [Tetris](http://www.nocknow.com/tetris/)
 说明 俄罗斯方块练习
-
-- [crossover](http://www.nocknow.com/tuanzi-js/)
-说明：Cocos-js TileMap 横版练习
 
 - [runp](http://www.nocknow.com/runp/)
 说明：仿照微博动图做的躲避小游戏
@@ -33,6 +30,9 @@ date: 2017-02-10 14:40:01
 
 - [trimartial](http://www.nocknow.com/trimartial/)
 说明：三消算法练习
+
+- [Ball](http://www.surebrz.com/origin/ball)
+说明：打球游戏，帧同步网游练习
 
 - [Aditor](http://www.nocknow.com/index.php?s=Aditor/Index/story)
 说明：和憬无大人合作的未完成的ACG编辑器
