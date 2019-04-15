@@ -10,9 +10,7 @@
     <i class="icon-next-heart"></i>
   </span>
   <span class="with-love">
-    <a href="http://www.reliablecounter.com" target="_blank">
-      <img src="http://www.reliablecounter.com/count.php?page=www.surebrz.com2&digit=style/scoreboards/9/&reloads=1" alt="www.reliablecounter.com" title="www.reliablecounter.com" border="0">
-    </a>
+    <a href="http://www.reliablecounter.com" target="_blank"><img src="https://www.reliablecounter.com/count.php?page=surebrz.com12559361&digit=style/plain/13/&reloads=0" alt="" title="" border="0"></a><br /><a href="http://" target="_blank" style="font-family: Geneva, Arial; font-size: 9px; color: #330010; text-decoration: none;"></a>
   </span>
 </div>
 
