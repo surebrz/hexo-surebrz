@@ -23,6 +23,21 @@ categories: 笔记
 
 ## 安装时踩的坑
 
+### pyaudio
+
+一开始使用了自带的 pyaudio，后来折腾其他东西时可能把其他依赖库降级了，录音出问题无法唤醒，重装时报错。
+
+解决：
+
+** 如果你使用了virtualenv，一般会发现pyaudio安装失败。这种情况下你需要安装APT中的PortAudio开发头文件，然后安装PyAudio **：
+	
+	```
+	sudo apt-get install portaudio19-dev
+	pip install pyaudio
+	```
+	
+解决方案来自 [这篇文章](https://segmentfault.com/a/1190000013854294)
+	
 ### libatlas-base-dev
 
 首先更换了软件源 (可用列表见[这里](http://www.raspbian.org/RaspbianMirrors))
