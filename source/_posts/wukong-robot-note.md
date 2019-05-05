@@ -78,6 +78,7 @@ sudo apt-get upgrade
 根据提示尝试依次手动安装依赖：
 
 1.
+
     pi@raspberrypi:~ $ sudo apt-get install libatlas-dev
     正在读取软件包列表... 完成
     正在分析软件包的依赖关系树
@@ -92,6 +93,7 @@ sudo apt-get upgrade
     E: 无法修正错误，因为您要求某些软件包保持现状，就是它们破坏了软件包间的依赖关系。
 
 2.
+
     pi@raspberrypi:~ $ sudo apt-get install libblas-dev
     正在读取软件包列表... 完成
     正在分析软件包的依赖关系树
@@ -106,6 +108,7 @@ sudo apt-get upgrade
     E: 无法修正错误，因为您要求某些软件包保持现状，就是它们破坏了软件包间的依赖关系。
 
 3.
+
     pi@raspberrypi:~ $ sudo apt-get install libblas3=1.2.20110419-10
     正在读取软件包列表... 完成
     正在分析软件包的依赖关系树
@@ -189,13 +192,15 @@ Conversation.py
 
 ```
     def pardon(self):
-        self.pardonTimes || = 0
+        self.pardonTimes = self.pardonTimes or 0
         self.pardonTimes += 1
         if self.pardonTimes > 1:
             self.pardonTimes = 0
             return
         self.say("抱歉，刚刚没听清，能再说一遍吗？", onCompleted=lambda: self.doResponse(self.activeListen()))
 ```
+
+将ARS解析错误的返回值改为 None，识别结果为空数组时返回 ''
 
 修改 doResponse :
 
@@ -207,11 +212,11 @@ def doResponse(self, query, UUID='', onSay=None):
         if onSay:
             self.onSay = onSay
 
-        if isnull(query):
+        if query == None:   # 错误时重试
             self.pardon()
             return
 
-        if query.strip() == '':
+        if query.strip() == '': # 识别到空内容时不重试
             return
             
         self.appendHistory(0, query, UUID)
