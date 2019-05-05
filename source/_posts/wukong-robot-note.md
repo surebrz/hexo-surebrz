@@ -6,6 +6,8 @@ categories: 笔记
 
 周末尝试在自己的树莓派上安装了一下 [wukong-robot智能音箱](https://wukong.hahack.com/#/)，使用起来非常简单的智能音箱项目，记录一下安装和使用时用到的工具和踩的坑，留作之后扩展编码使用。
 
+![pic](https://github.com/surevision/wukong-robot/raw/master/docs/_static/IMG_20190504_155309.jpg)
+
 <!-- more  -->
 
 ## 笔记和工具
