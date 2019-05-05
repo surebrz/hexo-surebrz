@@ -1,7 +1,7 @@
 title: wukong-robot智能音箱折腾笔记
 date: 2019-04-30 07:42:09
-tags: [wukong-robot, 折腾]
-categories: 笔记
+tags: [wukong-robot, 折腾, 笔记]
+categories: 树莓派
 ---
 
 周末尝试在自己的树莓派上安装了一下 [wukong-robot智能音箱](https://wukong.hahack.com/#/)，使用起来非常简单的智能音箱项目，记录一下安装和使用时用到的工具和踩的坑，留作之后扩展编码使用。
