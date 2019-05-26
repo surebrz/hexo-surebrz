@@ -7,10 +7,10 @@
   </span>
   <span class="author" itemprop="copyrightHolder">{{ config.author }}</span>
     <span class="with-love">
-    <i class="icon-next-heart"></i>
+    <i class="icon-next-heart">|</i>
   </span>
   <span class="with-love">
-    <a href="http://www.reliablecounter.com" target="_blank"><img src="https://www.reliablecounter.com/count.php?page=surebrz.com12559361&digit=style/plain/13/&reloads=0" alt="" title="" border="0"></a><br /><a href="http://" target="_blank" style="font-family: Geneva, Arial; font-size: 9px; color: #330010; text-decoration: none;"></a>
+    <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1277645919'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s5.cnzz.com/z_stat.php%3Fid%3D1277645919%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));</script>
   </span>
 </div>
 
