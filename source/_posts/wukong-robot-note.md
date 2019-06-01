@@ -10,6 +10,10 @@ categories: 树莓派
 
 <!-- more  -->
 
+## fork 过的自用 git 地址
+
+> https://github.com/surevision/wukong-robot
+
 ## 笔记和工具
 
 ### 模型训练
