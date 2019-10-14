@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv='Content-Type' content="text/html; charset=utf-8">
+<style>
+body {
+	/*background-color:#66ccff;*/
+}
+div {
+	/*border: 1px solid black;*/
+}
+.center {
+	width:100%;
+	background:url("flower.jpg");
+	background-position:50% 50%;
+	background-repeat:no-repeat;
+}
+.footer {
+	margin:0px;
+	padding:0px;
+    width:100%;
+    height:4em; 
+	border:1px dotted #66ccff;
+	display: table;
+}
+.footer span {
+    text-align:center;
+    display:table-cell; 
+    vertical-align:middle;
+}
+.span_left {
+	/*float:left;*/
+	font-size:10px;
+}
+.span_right {
+	/*float:right;*/
+}
+</style>
+<title>ふらわ~</title>
+</head>
+<body style="margin:0px auto;width:100%;height:100%;">
+<div id="center" class="center">&nbsp;</div>
+<p id="footer" class="footer">
+	<span id="flow_words" class="span_left">&nbsp;</span>
+	<span style="display:none;" id="words">今晚去看星星吧</span>
+	<span id="audio_flash" class="span_right">
+		<!--<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="150" height="20"
+			codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab">
+			<param name="movie" value="singlemp3player.swf?file=http://antiserver.kuwo.cn/anti.s?format=mp3|aac&rid=530917&type=convert_url&response=res&autoStart=true&showDownload=true" />
+			<param name="wmode" value="transparent" />
+			<embed wmode="transparent" width="150" height="20" src="singlemp3player.swf?file=http://antiserver.kuwo.cn/anti.s?format=mp3|aac&rid=530917&type=convert_url&response=res&autoStart=true&showDownload=true"
+			type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
+		</object>-->
+		<audio id="audio" controls="controls" autoplay="autoplay" loop="loop" src="http://antiserver.kuwo.cn/anti.s?format=mp3|aac&rid=530917&type=convert_url&response=res#.mp3" type="audio/mpeg"></audio>
+	</span>
+</p>
+</body>
+<script>
+	var step_cnt = 0;
+	var word_cnt = -1;
+	var step_handler = null;
+	function step() {
+		if (step_handler != null) {
+			cancelAnimationFrame(step_handler);
+		}
+		var time = 0.05;
+		var wordsDom = document.getElementById("words");
+		var flow_words = document.getElementById("flow_words");
+		var words = wordsDom.innerHTML;
+		if (word_cnt > words.lenght) {
+			return;
+		}
+		step_cnt += 1;
+		if (step_cnt == parseInt(60 * (time))) {
+			step_cnt = 0;
+			word_cnt += 1;
+		}
+		flow_words.innerHTML = words.substr(0, word_cnt);
+		step_handler = requestAnimationFrame(step);
+	}
+	function resize() {
+		var center = document.getElementById("center");
+		var footer = document.getElementById("footer");
+		var flow_words = document.getElementById("flow_words");
+		var audio_flash = document.getElementById("audio");
+		console.log(document.documentElement.clientHeight, window.innerHeight);
+		var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+		center.style.height = (h - footer.clientHeight - 2) + "px";
+		footer.style.width = (document.documentElement.clientWidth - 2) + "px";
+		flow_words.style.width = (footer.clientWidth - audio_flash.clientWidth - 5) + "px";
+		console.log("width", footer.clientWidth, audio_flash.clientWidth, flow_words.style.width);
+		if (step_handler != null) {
+			cancelAnimationFrame(step_handler);
+		}
+		step_handler = requestAnimationFrame(step);
+	}
+	window.onload = resize;
+	window.onresize = resize;
+</script>
+</html>

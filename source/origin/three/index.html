@@ -1,0 +1,205 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+	<title>May Sunday</title>
+	<script src="__PUBLIC__/js/three.min.js"></script>
+</head>
+<body style="margin:0px;">
+	<script src="__PUBLIC__/js/OBJLoader.js"></script>
+	<script type="text/javascript">
+	// forked from siouxcitizen's "Three.js r70　でOBJファイル形式3Dモデルを表示(WebGL使用)" http://jsdo.it/siouxcitizen/8alk
+	// forked from siouxcitizen's "Three.js r70　でサンプル3DモデルFemaleを表示(WebGL使用)" http://jsdo.it/siouxcitizen/7mPx
+	//Three.js r70　でOBJファイル形式3Dモデルを表示
+	//
+	//OBJファイル形式の3Dモデルを表示してみました　
+	//
+	//
+	//以下サイト・コードを参考にさせていただきました
+	//
+	//Three.js + Oimo.js で箱に色々入れてみるテスト	
+	//http://jsdo.it/cx20/olho
+	//
+	//three.js / examples　→　webgl　→　loader / obj
+	//http://threejs.org/examples/#webgl_loader_obj
+	//view-source:http://threejs.org/examples/webgl_loader_obj.html
+	//
+	//MagicaVoxelで勇者キャラクタを作成してAway3Dで表示　(参考にした自分のコードです)
+	//http://jsdo.it/siouxcitizen/mvkT
+	//
+	var container;
+	var scene; 
+	var camera; 
+	var renderer;
+	 
+	var threeDModel;
+	var isMouseDown = true;
+
+
+	var zoompos = 100, minzoomspeed = .015;
+	var zoomspeed = minzoomspeed;
+
+	init();
+	render();
+
+	function init() {
+
+	    container = document.createElement( 'div' );
+	    document.body.appendChild( container );
+
+	    // 3Dシーン作成
+	    scene = new THREE.Scene(); 
+
+	    // カメラ設定
+	    camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 ); 
+	    camera.position.z = 200; 
+	    camera.position.y = 0; 
+
+	    // 3D描画用レンダラ設定
+	    renderer = new THREE.WebGLRenderer(); 
+	    renderer.setSize( window.innerWidth, window.innerHeight ); 
+	    document.body.appendChild( renderer.domElement ); 
+	    //背景を白にする
+	    renderer.setClearColor(0x00ffff, 1); 
+
+	    // 光源の設定
+	    var light = new THREE.DirectionalLight("#fffffd", 1);
+	    var ambient = new THREE.AmbientLight("#221100");
+	    light.position.set( 0, -70, 100 ).normalize();
+	    scene.add(light);
+	    scene.add(ambient);
+
+	    // 3Dモデル用テクスチャ画像の読込
+	    var texture = new THREE.Texture();
+	    var manager = new THREE.LoadingManager();
+	    manager.onProgress = function ( item, loaded, total ) {};
+	    var onProgress = function ( xhr ) {};
+	    var onError = function ( xhr ) {};
+
+	    var imageLoader = new THREE.ImageLoader( manager );
+	    //imageLoader.load( 'http://jsrun.it/assets/9/9/W/G/99WGE.png', function ( image ) {
+	    imageLoader.load( '__PUBLIC__/assets/-new(002).png', function ( image ) {
+
+	        texture.image = image;
+	        texture.needsUpdate = true;
+
+	    } );
+
+	    // 3Dモデル読込
+	    var objLoader = new THREE.OBJLoader( manager );
+	    //objLoader.load( 'http://jsrun.it/assets/g/U/i/X/gUiXN', function ( object ) {
+	    objLoader.load( '__PUBLIC__/assets/-new(002).obj', function ( object ) {
+
+	        object.traverse( function ( child ) {
+
+	            if ( child instanceof THREE.Mesh ) {
+
+	                child.material.map = texture;
+	                child.material.wireframe = false;
+	            }
+
+	        } );
+
+	        object.scale.set( 2, 2, 2 );
+	        threeDModel = object;
+	        scene.add( threeDModel );
+
+	    }, onProgress, onError );
+
+
+	    // マウス、タッチ処理を呼び出すイベントリスナーをセット
+	    document.addEventListener("mousedown", onMouseDown);
+	    document.addEventListener("touchstart", onMouseDown);
+	    document.addEventListener("mouseup", onMouseUp);
+	    document.addEventListener("touchend", onMouseUp);
+	    document.addEventListener("mousemove", onMouseMove);
+	    document.addEventListener("touchmove", onMouseMove);
+
+		document.addEventListener( 'mousewheel', onMouseWheel, false );
+	}
+
+	// 3Dモデル読込時コールバック関数
+	function createScene( geometry, materials, x, y, z) {
+
+		threeDModel = new THREE.Mesh( geometry, new THREE.MeshFaceMaterial( materials ) );
+		threeDModel.position.set( x, y, z );
+		threeDModel.scale.set( 4, 4, 4 );
+		scene.add( threeDModel );
+
+	}
+
+	function render() { 
+		// Put some limits on zooming
+		var minzoom = 0.05;
+		var maxzoom = 200;
+		var damping = (Math.abs(zoomspeed) > minzoomspeed ? .45 : 0.5);
+
+		// Zoom out faster the further out you go
+		var zoom = THREE.Math.clamp(Math.pow(Math.E, zoompos), minzoom, maxzoom);
+		zoompos = Math.log(zoom);
+
+		// Slow down quickly at the zoom limits
+		if ((zoom == minzoom && zoomspeed < 0) || (zoom == maxzoom && zoomspeed > 0)) {
+			damping = .85;
+		}
+
+		zoompos += zoomspeed;
+		zoomspeed *= damping;
+		var mouse = [.5, .5];
+
+		camera.position.x = Math.sin(.5 * Math.PI * (mouse[0] - .5)) * zoom;
+		camera.position.y = Math.sin(.25 * Math.PI * (mouse[1] - .5)) * zoom;
+		camera.position.z = Math.cos(.5 * Math.PI * (mouse[0] - .5)) * zoom;
+		//console.log(camera.position.x, camera.position.y, camera.position.z);
+
+	    requestAnimationFrame( render ); 
+	    renderer.render(scene, camera);
+	    
+	}
+
+	// マウスを押したとき
+	function onMouseDown(event) {
+	    isMouseDown = true;
+	}
+
+	// マウスを動かした時
+	function onMouseMove(event) {
+	    if (isMouseDown) {
+	        // 3DモデルをX軸とY軸方向に回転させます
+	        if ( threeDModel ) {
+			    threeDModel.rotation.y = getMouseX(event)/500;
+			    threeDModel.rotation.x = getMouseY(event)/500;
+		    }
+	    }
+	}
+
+	// マウスを離したとき
+	function onMouseUp(event) {
+	    //isMouseDown = false;
+	}
+
+	function onMouseWheel(ev) {
+		var amount = -ev.wheelDeltaY || ev.detail;
+		var dir = amount / Math.abs(amount);
+		zoomspeed = dir/10;
+
+		// Slow down default zoom speed after user starts zooming, to give them more control
+		minzoomspeed = 0.001;
+	}
+
+	function getMouseX(event) {
+	    if (event.type.indexOf("touch") == -1)
+	        return event.clientX;
+	    else
+	        return event.touches[0].clientX;
+	}
+
+	function getMouseY(event) {
+	    if (event.type.indexOf("touch") == -1)
+	        return event.clientY;
+	    else
+	        return event.touches[0].clientY;
+	}
+	</script>
+
+</body>
+</html>
