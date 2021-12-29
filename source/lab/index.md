@@ -18,6 +18,11 @@ date: 2017-02-10 14:40:01
 
 ## Cocos
 
+### [Go North](https://gitee.com/surevision/go-north)
+
+![pic](http://www.surebrz.com/origin/go-north/img/pic.png)
+说明：为论坛复活准备的小游戏，然而论坛并没有复活……
+
 ### 重力迷宫弹珠
 
 ![pic](http://www.surebrz.com/origin/imgs/zlsys.jpg)
