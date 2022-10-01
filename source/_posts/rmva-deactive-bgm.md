@@ -5,9 +5,9 @@ categories: RPG Maker
 ---
 
 微博图床挂了……
-
+![效果](./origin/imgs/QQ20221001143505.png)
 借助 @晴兰 和 @yangff 大佬的 WndProc 总算实现了切换后台事件的监听，之前从第三方 Player 入手一直不成功，目测是加载 RGSSXXX.dll 后 WndProc 被接管了。
-
+![WIN32API](./origin/imgs/QQ20221001161636.png)
 这样一来就可以处理 RM 默认切到后台后渲染暂停但 BGM 继续播放的情况，避免演出和音乐不同步。
 
 原版 Audio 没有暂停，续播功能只支持 ogg 格式，需要使用第三方音乐引擎。
