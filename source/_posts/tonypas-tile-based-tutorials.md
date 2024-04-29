@@ -1,8 +1,18 @@
-title: 【原创翻译】Tonypa 基于 tile 地图的游戏开发指引 (Tonypa's tile-based tutorials)
+title: 【原创翻译】Tonypa 基于瓦片地图的游戏开发教程 (Tonypa's tile-based tutorials)
 date: 2024-04-25 19:09:20
 tags: [教程,翻译,游戏开发]
 categories: 教程
 ---
+
+教程地址：http://www.gotoandplay.it/_articles/2004/02/tonypa.php
+
+教程原作者地址（已失效）：http://www.tonypa.pri.ee/
+
+看到一篇非常棒的 2D 瓦片地图游戏开发教程，对瓦片地图游戏进行了手把手级别深入浅出的系统教学。鉴于原文已经是 2004 年的教程，且作者原始博客已经无法访问，为了避免教程遗失，在这里对该教程进行翻译留档。
+
+原文在 Flash 环境使用 ActionScript 进行开发，由于 Flash 播放器在各浏览器上都已停止支持，本文并不能直接展示原教程的示例，仅提供镜像下载。本文也会使用 HTML5 + PixiJS 对教程中的示例进行复刻，仅供参考。
+
+<!-- more -->
 
 # 简介
 
@@ -26,23 +36,318 @@ categories: 教程
 
 ## FLASH 和瓦片地图
 
-众所周知，Flash 是基于矢量图的工具，因此 Flash 的图片文件通常有着较小的尺寸并且可以改变大小。单因此你就不必基于瓦片来制作游戏了？
+众所周知，Flash 是基于矢量图的工具，因此 Flash 的图片文件通常有着较小的文件大小并且可以改变尺寸。单因此你就不必基于瓦片来制作游戏了？
+然而，尽管你可以轻易地在 Flash 中制作基于图片的游戏，单当你的游戏场景想要变得更大、你想为游戏增加更多特性的时候，你将会陷入麻烦。基于瓦片地图在很多方面将会更加简单（比如等距视角、寻路、图片深度排序）。别忘了，基于瓦片的游戏已经经过了长足的发展，很多理论也可以为 Flash 使用。
 
-As we all know Flash is vector based, so Flash files have small size and you can resize them. So, you wont need tiles at all to create game? Well, you can easily do art based games in Flash, but when your game area gets bigger and you want more features, you might be in trouble. Some things are so much easier to do in tile based games (isometric view, pathfinding and depth sorting to name few). Dont forget, tile based games have been around for a long time and much of the theory is usable with Flash too.
+但在 Flash 中使用瓦片的弊端是我们并不能很好的利用他的绘制和时间线功能。我们的游戏是基于 ActionScript 的，需要编写很多的代码来修改和移动舞台上的图片。
 
-Sad part about tile based games in Flash is, that we wont benefit much from the drawing or timeline parts, our game is made with actionscript and basically we just have bunch of code to create, move and modify images on the stage.
+使用位图作为瓦片是个好主意。是的，我们在 Flash 里可以画出所有事物并得到矢量图，但是当游戏运行时，播放器不得不计算屏幕里的向量，但我们并不想让任何东西使得游戏变卡。位图是一种预先渲染好的图片，并且一般情况下它们看起来效果已经很不错。如果你想向 Flash 中引入位图瓦片，最好是将它保存为 GIF 文件，并且有着透明背景。
 
-Its also good idea to use bitmap images as tiles graphics. Yes, we could draw everything inside Flash and have the vector graphics, but when the game is run, player has to calculate the vectors on screen and we dont want anything to slow down our game. Bitmaps are pre-rendered and usually they look better too. If you want to import bitmap tiles into Flash, its usually best to save the images as GIF files with transparent background (for objects).
+聊的够多了，让我们开始制作些东西吧 :)
 
-Enough boring talk, lets make something :)
-
-First, we will see how to store our tile based maps.
+首先，我们来看看如何保存我们的瓦片地图。
 
 # 地图格式
 
+## 地图格式
+
+我们将把地图保存为 Flash 提供的一个非常棒的结构里：数组。如果你不知道什么是数组，请先打开并阅读 Flash 的帮助文件。
+
+## 二维数组
+
+我们使用二维数组保存地图。不，他并不是指什么超出我们维度的东西！他只是每个元素都是一个数组的数组。有点迷糊了？接着看吧。
+
+一般来说，创建一个简单的数组看起来像这样：
+
+```
+myArray = ["a", "b", "c", "d"];
+```
+
+着很简单，你可以用 `myArray[0]` 取到第一个元素 `"a"`，用 `myArray[1]` 取到第二个元素 `"b"`，以此类推。
+
+接下来是关键，如果我们不是把 "a"，"b"，"c" 放到数组里，而想把其他数组放到数组里呢？当然可以，这里我们创建一些数组：
+
+```
+a = ["a1", "a2", "a3"];
+b = ["b1", "b2", "b3"];
+c = ["c1", "c2", "c3"];
+myArray = [a, b, c];
+```
+
+现在，我们已经声明了一个数组 `myArray` 并且其中的每个元素也都是数组，因此，第一个元素 `myArray[0]` 是一个数组 `["a1", "a2", "a3"]`，第二个元素的值是 `["b1", "b2", "b3"]`，如果你使用：
+
+```
+myVar = myArray[2];
+```
+
+那么 `myVar` 的值取到的是 `["c1", "c2", "c3"]`。
+
+好的，你可能会提问，但是我们还没有说完。如果你使用:
+
+```
+myVar = myArray[2][0];
+```
+
+那么它将取到 `myArray` 第 1 个元素的第 3 个元素值 `"c1"`。
+
+让我们再来一些练习。
+
+```
+myVar=myArray[0][1]
+```
+
+取到 `myArray` 第一个元素 `a` 的第 2 个元素 `"a2"`，而
+
+```
+myVar=myArray[1][0]
+```
+
+取到值 `"b1"`。
+
+这会儿看明白了吗？
+
+## 制作地图
+
+首先，我们编写代表地图瓦片信息的数组：
+
+```
+myMap = [
+[1, 1, 1, 1, 1, 1, 1, 1],
+[1, 0, 0, 0, 0, 0, 0, 1],
+[1, 0, 1, 0, 0, 0, 0, 1],
+[1, 0, 0, 0, 0, 1, 0, 1],
+[1, 0, 0, 0, 0, 0, 0, 1],
+[1, 1, 1, 1, 1, 1, 1, 1]
+];
+```
+
+如你所见，我们的地图包含 6 行 8 列。如果主角从左上角出发，他可以向右走 8 步，向下走 6 步，然后看着虚空发呆。
+
+接着，一些聪明的孩子已经提出了关键问题：“这个地图数组里的数字是什么意思？”。好的，我们将用一些面向对象的知识（没错，是 `Objects`， 别跑，这并不难）来创建地图和管理我们的游戏。我们先定义一下瓦片，它们将作为我们要放到游戏里的模板一样，然后我们走遍地图，使用每个位置上的数字。
+
+当我们取到数字 `1`，我们会创建一个新的 `Tile1` 模板，然后在游戏里到达那个图块时，我们将获取到那个图片的对象（objects）属性，它将包含很多的属性，但是最基本的图块可以只包含 2 个属性：是否可以行走（walkable），以及帧图片（frame）。
+
+是否可行走（walkable）属性用来表示角色能够移动到该图块（此时设置 `walkable = true`）或不能（false）。我们不使用碰撞检测，碰撞检测效率很低并且在瓦片地图游戏中使用它一点也不酷。
+
+帧图片（frame）属性用来表示我们要在图块位置显示的影片剪辑。它用来将瓦片显示在屏幕上。每个我们用来显示的影片剪辑图块都会默认显示第 1 帧。我们将在 **创建瓦片地图** 章节讨论更多相关内容。
+
+因此，如果我们像这样定义瓦片：
+
+```
+//wall tile
+Tile1 = function () {};
+Tile1.prototype.walkable = false;
+Tile1.prototype.frame = 2;
+```
+
+我们便创建好了地图里所有的数字 1 对应的瓦片 `Tile1` ，同时我们也可以说这个图块不能行走（walkable = false），并且瓦片的影片剪辑将会显示第 2 帧
+
 # 更多地图
 
+## 更多地图类型
+
+你也许会好气我为什么选择了这种地图类型。我并不能说这是最好的方式，我不能说它可以更快地创建地图或者使得地图文件尺寸最小，我只能说经过了这几年的使用体验，我发现这种地图格式更好地满足了我的要求。但是也让我们看看其他可行的地图数据格式吧。
+
+## JAILBITCH 方法
+
+原 [OutsideOfSociety](https://oosmoxiecode.com/) 教程中使用了非常简单的地图格式。它同样使用二维数组，并且每个数字提供了用来展示图块的帧序号。你每次想判断下一个图块是否是墙壁（或者可拾取的东西、门、以及其他任何事物）时，你都需要检查地图数组中的数字。
+
+当检查碰撞时，你要判断指定的帧图片是不是墙（或者物品、门）。比如，你可以约定帧序号 0 到 100 是可行走的图块，101 到 200 是墙，而大于 200 的是特殊图块。
+
+当你的瓦片类型很少或者变动不大时，这种方式显得非常简单。
+
+## 沙漠里的树
+
+一些地图有着区别非常大的图块，有些部分用的非常少，比如，在沙漠中，长达数公里都只有黄沙，如果你够幸运，你可以看到绿洲。又比如海洋，到处都只有海水，仅有少量的陆地。
+
+如果你的地图使用了大量重复的图块（沙地），只有少量的变化（树），那么二维数组并不是一个很好的格式。它将包含太多冗余的信息，在其他的数字出现前，都是 0。在这种场景下，一个更好的处理方式是只录入非 0 的信息，除此之外都是沙地。
+
+假设你有一个 100 * 100 的地图，只有 3 棵树，你可以这样写：
+
+```
+trees = [[23,6], [37,21], [55,345]]
+```
+
+当创建地图时，遍历 `tree` 数组，设置树木图块，然后让其他的图块都是沙子的图片。这比写下 100 * 100 的二维数组简单得多。
+
+当然，当你创建更多物体（树、灌木、草地、石头、水）的时候，这个方法将会牺牲很多编码速度，并且更难认出哪些物体放在了哪里。
+
+## 小号，中号，大大大大号（XXXL）
+
+如果你使用过 Flash MX 或更高的版本，你可能已经听说过神器的魔法结构 XML。它和 HTML 类似，可以定义丰富的内容。你可以使用 XML 来保存地图数据，
+
+下面的 XML 地图定义基于 Jobe Makar's 的著作《Macromedia Flash MX Game Design Demystified》。
+让我们看一下 XML 下的简单地图：
+
+```
+<map>
+	<row>
+		<cell type="1">
+		<cell type="1">
+		<cell type="1">
+	</row>
+	<row>
+		<cell type="1">
+		<cell type="4">
+		<cell type="1">
+	</row>
+	<row>
+		<cell type="1">
+		<cell type="1">
+		<cell type="1">
+	</row>
+</map>
+```
+
+我们设置了一个 3 * 3 地图，首先有一个标记 `map`，内部是 3 个 `row` 节点，每个节点有 3 个 `cell` 子节点。
+
+为了从外部文件加载地图，XML 是一个比较好的解决方案，因为大部分 XML 解析工作可以使用 Flash MX 内部函数。从文本文件中读取二维数组却没有这么简单，每次都要自行从字符串中解析加载变量并且分割为数组，非常的慢。
+
+你也可以看到 XML 的缺点：它的文件更大，并且你需要 Flash 6 版本以上的播放器。
+
+本文以下的例子都是用二维数组来保存地图数据，使用 `objects` 创建瓦片信息，详情参考章节 **地图格式**。
+
 # 创建瓦片地图
+
+## 创建瓦片地图
+
+正如你在章节 **地图格式** 里看到的，我们将使用二维数组保存地图。现在我们将把瓦片显示在屏幕上，将他们设置在正确的位置，显示正确的帧图片。这个 Flash 硬盘将会像这样：
+
+[swf](http://www.gotoandplay.it/_articles/2004/02/tonypa/img/p05_1.swf) / [镜像](http://www.surebrz.com/origin/imgs/tonypas-tile-based-tutorials/p05_1.swf)
+
+首先定义对象和变量：
+
+```
+myMap = [
+[1, 1, 1, 1, 1, 1, 1, 1],
+[1, 0, 0, 0, 0, 0, 0, 1],
+[1, 0, 1, 0, 0, 0, 0, 1],
+[1, 0, 0, 0, 0, 1, 0, 1],
+[1, 0, 0, 0, 0, 0, 0, 1],
+[1, 1, 1, 1, 1, 1, 1, 1]
+];
+ 
+game={tileW:30, tileH:30};
+ 
+//walkable tile
+game.Tile0 = function () {};
+game.Tile0.prototype.walkable = true;
+game.Tile0.prototype.frame = 1;
+ 
+//wall tile
+game.Tile1 = function () {};
+game.Tile1.prototype.walkable = false;
+game.Tile1.prototype.frame = 2;
+
+```
+
+这样，我们将地图保存到变量 `myMap` 中，地图定义之后的一行定义了对象 `game`，我们将使用这个对象来管理我们需要的所有物件。我们可以将这些物件放在 _root 或其他什么地方，但是将他放在指定的变量中可以更加清晰地想起来它在哪。
+
+注意我们为 `game` 对象设置了 2 个属性 `tileW = 30` `tileH = 30`，指出我们所有的瓦片尺寸有多大。瓦片并不一定是正方形，你也可以使用宽矩形或高矩形，当我们想要知道瓦片的尺寸时，我们可以这么写：
+
+```
+game.tileW;
+game.tileH;
+```
+
+当我们想要改变瓦片尺寸时，只需要修改对应行的代码。
+
+接下来我们设置了 `game` 对象内的原型（prototype）：
+
+```
+game.Tile0 = function () {};
+game.Tile0.prototype.walkable = true;
+game.Tile0.prototype.frame = 1;
+```
+
+第一行的 `game.Tile0= function () {}` 声明了一个新的对象原型，当我们从地图数据数组中取到 0 时，我们使用 `Tile0` 作为模板，在那个位置创建新瓦片。
+
+接下来的两行为使用 `Tile0` 原型创建出来的对象设置属性。我们将让这些对象拥有属性 `walkable = true` （这意味着可以通过）以及 `frame = 1` （将会显示影片剪辑中第 1 帧的图片）。
+
+## 显示我们的地图
+
+你准备好创建瓦片了吗？我们将编写 `buildMap` 方法来处理所有的瓦片。如果你想创建更多关卡，可以使用相同的方法处理不同的地图数组。`buildMap` 方法将会做以下的工作：
+
+1. 加载影片剪辑
+2. 遍历地图数组
+3. 给每个瓦片创建对象
+4. 给每个瓦片加载影片剪辑
+5. 把瓦片放在对应的位置
+6. 显示正确的瓦片帧图片
+
+以下是代码：
+
+```
+function buildMap (map)
+{
+	_root.attachMovie("empty", "tiles", ++d);
+	game.clip = _root.tiles;
+	var mapWidth = map[0].length;
+	var mapHeight = map.length;
+	for (var i = 0; i < mapHeight; ++i)
+	{
+		for (var j = 0; j < mapWidth; ++j)
+		{
+			var name = "t_" + i + "_" + j;
+			game[name] = new game["Tile" + map[i][j]];
+			game.clip.attachMovie("tile", name, i * 100 + j * 2);
+			game.clip[name]._x = (j * game.tileW);
+			game.clip[name]._y = (i * game.tileH);
+			game.clip[name].gotoAndStop(game[name].frame);
+		}
+	}
+}
+```
+
+方法定义的第一行设置方法的参数为 `map` 变量，当我们调用时，将 map 数组传给方法，变量 `map` 应该是一个二维数组。
+
+下一行将影片剪辑绑定到舞台容器上：
+
+```
+_root.attachMovie("empty", "tiles", ++d);
+```
+
+你需要在 library 中创建一个空白（empty）的影片剪辑（没有图片）。右键单击影片剪辑，选择 “Linkage...” 勾选 "Export this symbol"，然后在 ID 框中输入 `empty`。现在，绑定影片剪辑的命令将会搜索名为 `empty` 的影片剪辑。它将在舞台上创建一个新的实例，名为 “tiles”。那个影片剪辑将会处理我们要在舞台上放置的所有瓦片。使用容器影片的好处是当我们想要移除瓦片（比如当游戏结束）时，我们只需要移除影片剪辑 `tiles` ，所有的瓦片都会消失。而如果你把所有的瓦片直接加载到 `_root` 上，当运行到下一帧（比如游戏结束帧）时，加载的瓦片并不会消失，你需要使用 ActionScript 来删除它们。
+
+当我们为瓦片创建影片剪辑后，我们还需要将他绑定给我们的 `game` 对象 `game.clip = _root.tiles`。当我们想把 `tiles` 放在其他地方的时候，只需要修改这一行而不必修改所有代码。
+
+接着我们设置两个变量 `mapWidth` 和 `mapHeight`。我们将用它们遍历地图数组。`mapWidth` 变量的值是地图数组第 1 个元素值的长度 `map[0].length`。如果你忘记了地图数组的内容格式，可以回看 **地图格式** 章节。第一个元素是另一个数组 `[1, 1, 1, 1, 1, 1, 1, 1]`，`mapWieth` 将会是它的数组长度，或者说数字的个数。现在我们知道地图的宽度了。
+
+使用同样的方法可以获取 `mapHeight` 的值，即 `map.length` 也就是地图数组的行数。这也是我们要创建的地图行数。
+
+我们使用下边的代码循环遍历地图数组：
+
+```
+for (var i = 0; i < mapHeight; ++i)
+{
+	for (var j = 0; j < mapWidth; ++j)
+	{
+		...
+	}
+}
+```
+
+我们让变量 `i` 从 0 循环至小于地图的高度，变量 `j` 从 0  循环至小于地图宽度。
+
+变量 `name` 在 `var name = "t_"+i+"_"+j` 中给我们的新瓦片对象设置名称。假如 `i` 为 0，`j` 为 1，那么 `name` 的值为 `"t_0_1"`，假如 `i` 为 34，`j` 为 78，那么 `name` 的值为 `"t_34_78"`。
+
+截下来我们创建新的瓦片对象：
+
+```
+game[name] = new game["Tile"+map[i][j]]
+```
+
+左边的 `game[name]` 将会表示放在 `game` 对象中的新瓦片对象，`map[i][j] ` 的值是根据 `i` 和 `j` 取到的地图数组的值（0、1），我们使用关键字 `new` 来根据之前定义的原型（Tile0、Tile1）创建瓦片对象。现在我们拥有当前瓦片对应的的瓦片对象了。
+
+在下一行中，我们将新的影片剪辑附加到舞台中，使用 `game.clip[name]` 来访问它。影片剪辑将通过 `i`、`j` 与 瓦片图片宽高相乘后被放在正确的 x/y 坐标中，由于我们的瓦片对象继承了原型中的“frame”属性，我们可以使用它来通过 `gotoAndStop` 命令显示正确的帧图片。
+
+当想要通过地图数组创建瓦片时，我们可以这样调用 `buildMap` 方法：
+
+```
+buildMap(myMap);
+```
+
+你可以在这里下载本章节的代码：[fla](http://www.gotoandplay.it/_articles/2004/02/tonypa/creatingTiles.fla) / [镜像](http://www.surebrz.com/origin/imgs/tonypas-tile-based-tutorials/creatingTiles.fla)
 
 # 主角
 

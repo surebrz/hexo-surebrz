@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+<head>
+<script src="https://pixijs.download/release/pixi.js"></script>
+</head>
+<body>
+<div id="p5_div" style="width:240px;height:180px;">
+</div>
+</body>
+  
+<script type="module">
+    const app = new PIXI.Application();
+    await app.init({ width: 240, height: 180 })
+    document.getElementById("p5_div").appendChild(app.canvas);
+    let obj = new PIXI.Graphics()
+    .rect(0, 0, 240, 180)
+    .fill(0x000000);
+    app.stage.addChild(obj);
+
+    // 
+    myMap = [
+        [1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 1, 0, 0, 0, 0, 1],
+        [1, 0, 0, 0, 0, 1, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1]
+    ];
+    
+    game={tileW:30, tileH:30};
+    
+    //walkable tile
+    game.Tile0 = function () {};
+    game.Tile0.prototype.walkable = true;
+    game.Tile0.prototype.frame = 1;
+    
+    //wall tile
+    game.Tile1 = function () {};
+    game.Tile1.prototype.walkable = false;
+    game.Tile1.prototype.frame = 2;
+    
+    function buildMap (map) {
+        _root.attachMovie("empty", "tiles", ++d);
+        game.clip = _root.tiles;
+        var mapWidth = map[0].length;
+        var mapHeight = map.length;
+        for (var i = 0; i < mapHeight; ++i)
+        {
+            for (var j = 0; j < mapWidth; ++j)
+            {
+                var name = "t_" + i + "_" + j;
+                game[name] = new game["Tile" + map[i][j]];
+                game.clip.attachMovie("tile", name, i * 100 + j * 2);
+                game.clip[name]._x = (j * game.tileW);
+                game.clip[name]._y = (i * game.tileH);
+                game.clip[name].gotoAndStop(game[name].frame);
+            }
+        }
+    }
+</script>
+</html>
