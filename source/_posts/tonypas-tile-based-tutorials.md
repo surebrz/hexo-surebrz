@@ -63,7 +63,7 @@ categories: 教程
 myArray = ["a", "b", "c", "d"];
 ```
 
-着很简单，你可以用 `myArray[0]` 取到第一个元素 `"a"`，用 `myArray[1]` 取到第二个元素 `"b"`，以此类推。
+这很简单，你可以用 `myArray[0]` 取到第一个元素 `"a"`，用 `myArray[1]` 取到第二个元素 `"b"`，以此类推。
 
 接下来是关键，如果我们不是把 "a"，"b"，"c" 放到数组里，而想把其他数组放到数组里呢？当然可以，这里我们创建一些数组：
 
@@ -174,7 +174,7 @@ trees = [[23,6], [37,21], [55,345]]
 
 ## 小号，中号，大大大大号（XXXL）
 
-如果你使用过 Flash MX 或更高的版本，你可能已经听说过神器的魔法结构 XML。它和 HTML 类似，可以定义丰富的内容。你可以使用 XML 来保存地图数据，
+如果你使用过 Flash MX 或更高的版本，你可能已经听说过神奇的魔法结构 XML。它和 HTML 类似，可以定义丰富的内容。你可以使用 XML 来保存地图数据，
 
 下面的 XML 地图定义基于 Jobe Makar's 的著作《Macromedia Flash MX Game Design Demystified》。
 让我们看一下 XML 下的简单地图：
@@ -211,7 +211,10 @@ trees = [[23,6], [37,21], [55,345]]
 
 ## 创建瓦片地图
 
-正如你在章节 **地图格式** 里看到的，我们将使用二维数组保存地图。现在我们将把瓦片显示在屏幕上，将他们设置在正确的位置，显示正确的帧图片。这个 Flash 硬盘将会像这样：
+正如你在章节 **地图格式** 里看到的，我们将使用二维数组保存地图。现在我们将把瓦片显示在屏幕上，将他们设置在正确的位置，显示正确的帧图片。这个 Flash 将会像这样：
+
+<iframe id="iframe_p5" width="240"
+  height="180" src="http://www.surebrz.com/origin/html/p5.html"></iframe>
 
 [swf](http://www.gotoandplay.it/_articles/2004/02/tonypa/img/p05_1.swf) / [镜像](http://www.surebrz.com/origin/imgs/tonypas-tile-based-tutorials/p05_1.swf)
 
@@ -349,7 +352,61 @@ buildMap(myMap);
 
 你可以在这里下载本章节的代码：[fla](http://www.gotoandplay.it/_articles/2004/02/tonypa/creatingTiles.fla) / [镜像](http://www.surebrz.com/origin/imgs/tonypas-tile-based-tutorials/creatingTiles.fla)
 
-# 主角
+# 英雄
+
+## 英雄
+
+没有不存在英雄的游戏。我们的英雄会拯救世界，救出公主，打败坏人。我们也会在游戏里加入英雄，他暂时还不能拯救世界，他什么有用的事都还不会做，但他就在这里：
+
+<iframe id="iframe_p6" width="240"
+  height="180" src="http://www.surebrz.com/origin/html/p6.html"></iframe>
+  
+[swf](http://www.gotoandplay.it/_articles/2004/02/tonypa/img/p06_1.swf) / [镜像](http://www.surebrz.com/origin/imgs/tonypas-tile-based-tutorials/p06_1.swf)
+
+英雄是一个红色方块 :) 啥，他看起来不强？那你可以自己画出来你的英雄。他的影片剪辑在库里叫做 “char”，不要让英雄的影片剪辑比瓦片的尺寸更大。
+
+另外记住，英雄的影片剪辑（红色方框）坐标原点在中间，而瓦片的在左上角：
+
+![pic](http://www.surebrz.com/origin/imgs/tonypas-tile-based-tutorials/p06_2.gif)
+
+想要一些代码吗？在 `tiles` 的定义后边加入这行：
+
+```
+char={xtile:2, ytile:1};
+```
+
+这段代码定义了一个新的 `char` 对象。 `char` 对象将会处理我们角色的所有细心，比如怎么移动，感觉舒不舒服，以及吃啥。
+
+这次我们只给了 `char` 对象 2 个属性，`xtile` 和 `ytile`，用以表示我们的英雄站在那个瓦片上。当他移动时，我们会更新 `xtile/ytile` 属性，我们一直都知道英雄脚下是什么瓦片。比如，当 `xtile = 2`、`ytile = 1` 时（就像上边代码里那样），英雄站在瓦片 `"t_1_2"` 上。当你观察示例时，你可以看到英雄站在从左往右数第 3、从上往下数第 2 格的位置。瓦片序号从0开始计数。
+
+接下来我们会给英雄添加更多的属性。
+
+为了把英雄的视频剪辑加入舞台中，`buildMap` 方法的 for 循环后要加入下边的代码：
+
+```
+game.clip.attachMovie("char", "char", 10000);
+char.clip = game.clip.char;
+char.x = (char.xtile * game.tileW) + game.tileW / 2;
+char.y = (char.ytile * game.tileW) + game.tileW / 2;
+char.width = char.clip._width / 2;
+char.height = char.clip._height / 2;
+char.clip._x = char.x;
+char.clip._y = char.y;
+```
+
+代码的第一行从库中附加了一个新的影片剪辑到 `game.clip` 里（你还记得我们在上一章节中把 _root.tiles 保存在了 `game.clip` 里），然后将实例命名为 `char`。
+
+然后我们把 `char` 影片剪辑（game.clip.char）保存到 `char` 对象（char.clip）里，这样每次我们想要取得该影片剪辑的时候，可以简单的用 `char.clip` 代替完整的形式： `_root.tiles.char`。这样也避免了当我们想把 `char` 视频剪辑放到别的地方的时候，修改所有的代码。
+
+接下来我们将会计算 `char` 对象的属性： `x` 和 `y`。你也许会好奇，我们已经有了 `xtile` 和 `ytile`，为什么我们还需要更多属性，记住，`xtile` 和 `ytile` 是图块的序号，`x` 和 `y` 属性是我们 `char` 影片剪辑的像素坐标。在给影片剪辑设置位置的时候，使用变量把像素坐标先记录下来是一个比较好的做法，你也许会需要改变英雄的位置，比如他撞到了墙壁或者失去平衡，修改变量的值比直接修改 `_x/_y` 会更加便捷。
+
+我们这样计算英雄的实际位置：将瓦片的序号乘以瓦片的宽度，加上瓦片尺寸的一半来让英雄站在瓦片中心。因此，`char.xtile * game.tileW` 就是水平方向上瓦片的序号诚意瓦片的宽度。
+
+接下来我们把英雄影片剪辑的宽高的一半保存在 `char` 对象中，这在我们计算英雄包围盒的时候会非常有用。记住，你可以构造你自己的包围计算方式，不一定是影片剪辑的宽高，有的图片可能会有会和墙壁碰撞的长发，这时要用你自己需要的 `width` 和 `height` 变量的值。
+
+最后两行把视频剪辑 `char.clip` 放在计算出的 `x`、`y` 坐标上。
+
+你可以在这里下载本章节的代码：[fla](http://www.gotoandplay.it/_articles/2004/02/tonypa/theHero.fla) / [镜像](http://www.surebrz.com/origin/imgs/tonypas-tile-based-tutorials/theHero.fla)
 
 # 按键移动
 
