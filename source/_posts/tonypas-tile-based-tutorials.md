@@ -63,7 +63,7 @@ categories: 教程
 myArray = ["a", "b", "c", "d"];
 ```
 
-着很简单，你可以用 `myArray[0]` 取到第一个元素 `"a"`，用 `myArray[1]` 取到第二个元素 `"b"`，以此类推。
+这很简单，你可以用 `myArray[0]` 取到第一个元素 `"a"`，用 `myArray[1]` 取到第二个元素 `"b"`，以此类推。
 
 接下来是关键，如果我们不是把 "a"，"b"，"c" 放到数组里，而想把其他数组放到数组里呢？当然可以，这里我们创建一些数组：
 
@@ -174,7 +174,7 @@ trees = [[23,6], [37,21], [55,345]]
 
 ## 小号，中号，大大大大号（XXXL）
 
-如果你使用过 Flash MX 或更高的版本，你可能已经听说过神器的魔法结构 XML。它和 HTML 类似，可以定义丰富的内容。你可以使用 XML 来保存地图数据，
+如果你使用过 Flash MX 或更高的版本，你可能已经听说过神奇的魔法结构 XML。它和 HTML 类似，可以定义丰富的内容。你可以使用 XML 来保存地图数据，
 
 下面的 XML 地图定义基于 Jobe Makar's 的著作《Macromedia Flash MX Game Design Demystified》。
 让我们看一下 XML 下的简单地图：
@@ -211,7 +211,10 @@ trees = [[23,6], [37,21], [55,345]]
 
 ## 创建瓦片地图
 
-正如你在章节 **地图格式** 里看到的，我们将使用二维数组保存地图。现在我们将把瓦片显示在屏幕上，将他们设置在正确的位置，显示正确的帧图片。这个 Flash 硬盘将会像这样：
+正如你在章节 **地图格式** 里看到的，我们将使用二维数组保存地图。现在我们将把瓦片显示在屏幕上，将他们设置在正确的位置，显示正确的帧图片。这个 Flash 将会像这样：
+
+<iframe id="iframe_p5" width="240"
+  height="180" src="http://www.surebrz.com/origin/html/p5.html"></iframe>
 
 [swf](http://www.gotoandplay.it/_articles/2004/02/tonypa/img/p05_1.swf) / [镜像](http://www.surebrz.com/origin/imgs/tonypas-tile-based-tutorials/p05_1.swf)
 
@@ -349,9 +352,197 @@ buildMap(myMap);
 
 你可以在这里下载本章节的代码：[fla](http://www.gotoandplay.it/_articles/2004/02/tonypa/creatingTiles.fla) / [镜像](http://www.surebrz.com/origin/imgs/tonypas-tile-based-tutorials/creatingTiles.fla)
 
-# 主角
+# 英雄
+
+## 英雄
+
+没有不存在英雄的游戏。我们的英雄会拯救世界，救出公主，打败坏人。我们也会在游戏里加入英雄，他暂时还不能拯救世界，他什么有用的事都还不会做，但他就在这里：
+
+<iframe id="iframe_p6" width="240"
+  height="180" src="http://www.surebrz.com/origin/html/p6.html"></iframe>
+  
+[swf](http://www.gotoandplay.it/_articles/2004/02/tonypa/img/p06_1.swf) / [镜像](http://www.surebrz.com/origin/imgs/tonypas-tile-based-tutorials/p06_1.swf)
+
+英雄是一个红色方块 :) 啥，他看起来不强？那你可以自己画出来你的英雄。他的影片剪辑在库里叫做 “char”，不要让英雄的影片剪辑比瓦片的尺寸更大。
+
+另外记住，英雄的影片剪辑（红色方框）锚点在中间，而瓦片的在左上角：
+
+![pic](http://www.surebrz.com/origin/imgs/tonypas-tile-based-tutorials/p06_2.gif)
+
+想要一些代码吗？在 `tiles` 的定义后边加入这行：
+
+```
+char={xtile:2, ytile:1};
+```
+
+这段代码定义了一个新的 `char` 对象。 `char` 对象将会处理我们角色的所有细心，比如怎么移动，感觉舒不舒服，以及吃啥。
+
+这次我们只给了 `char` 对象 2 个属性，`xtile` 和 `ytile`，用以表示我们的英雄站在那个瓦片上。当他移动时，我们会更新 `xtile/ytile` 属性，我们一直都知道英雄脚下是什么瓦片。比如，当 `xtile = 2`、`ytile = 1` 时（就像上边代码里那样），英雄站在瓦片 `"t_1_2"` 上。当你观察示例时，你可以看到英雄站在从左往右数第 3、从上往下数第 2 格的位置。瓦片序号从0开始计数。
+
+接下来我们会给英雄添加更多的属性。
+
+为了把英雄的视频剪辑加入舞台中，`buildMap` 方法的 for 循环后要加入下边的代码：
+
+```
+game.clip.attachMovie("char", "char", 10000);
+char.clip = game.clip.char;
+char.x = (char.xtile * game.tileW) + game.tileW / 2;
+char.y = (char.ytile * game.tileW) + game.tileW / 2;
+char.width = char.clip._width / 2;
+char.height = char.clip._height / 2;
+char.clip._x = char.x;
+char.clip._y = char.y;
+```
+
+代码的第一行从库中附加了一个新的影片剪辑到 `game.clip` 里（你还记得我们在上一章节中把 _root.tiles 保存在了 `game.clip` 里），然后将实例命名为 `char`。
+
+然后我们把 `char` 影片剪辑（game.clip.char）保存到 `char` 对象（char.clip）里，这样每次我们想要取得该影片剪辑的时候，可以简单的用 `char.clip` 代替完整的形式： `_root.tiles.char`。这样也避免了当我们想把 `char` 视频剪辑放到别的地方的时候，修改所有的代码。
+
+接下来我们将会计算 `char` 对象的属性： `x` 和 `y`。你也许会好奇，我们已经有了 `xtile` 和 `ytile`，为什么我们还需要更多属性，记住，`xtile` 和 `ytile` 是图块的序号，`x` 和 `y` 属性是我们 `char` 影片剪辑的像素坐标。在给影片剪辑设置位置的时候，使用变量把像素坐标先记录下来是一个比较好的做法，你也许会需要改变英雄的位置，比如他撞到了墙壁或者失去平衡，修改变量的值比直接修改 `_x/_y` 会更加便捷。
+
+我们这样计算英雄的实际位置：将瓦片的序号乘以瓦片的宽度，加上瓦片尺寸的一半来让英雄站在瓦片中心。因此，`char.xtile * game.tileW` 就是水平方向上瓦片的序号诚意瓦片的宽度。
+
+接下来我们把英雄影片剪辑的宽高的一半保存在 `char` 对象中，这在我们计算英雄包围盒的时候会非常有用。记住，你可以构造你自己的包围计算方式，不一定是影片剪辑的宽高，有的图片可能会有会和墙壁碰撞的长发，这时要用你自己需要的 `width` 和 `height` 变量的值。
+
+最后两行把视频剪辑 `char.clip` 放在计算出的 `x`、`y` 坐标上。
+
+你可以在这里下载本章节的代码：[fla](http://www.gotoandplay.it/_articles/2004/02/tonypa/theHero.fla) / [镜像](http://www.surebrz.com/origin/imgs/tonypas-tile-based-tutorials/theHero.fla)
 
 # 按键移动
+
+## 按键移动
+
+这个章节中我们将使用 4 个方向键移动我们的英雄。在移动时他将面向移动的方向并播放动画。当他站着不动的时候动画将会停止。你可以在这里试试效果：
+
+<iframe id="iframe_p7" width="240"
+  height="180" src="http://www.surebrz.com/origin/html/p7.html"></iframe>
+
+[swf](http://www.gotoandplay.it/_articles/2004/02/tonypa/img/p07_1.swf) / [镜像](http://www.surebrz.com/origin/imgs/tonypas-tile-based-tutorials/p07_1.swf)
+
+本例中没有碰撞检测，因此英雄可以移动到舞以外，不过先不要担心，我们在接下来的章节中会处理这个问题。
+
+首先创建我们的英雄角色。新建 3 个影片剪辑，你将会使用一个影片剪辑作为向左或向右方向的移动动画（我使用向左移动的动画），一个向上移动，一个向下移动。在这些影片剪辑中设置你的移动动画。
+
+![pic](http://www.surebrz.com/origin/imgs/tonypas-tile-based-tutorials/p07_2.gif)
+
+这些影片剪辑不需要写代码。
+
+现在编辑你的 `char` 影片剪辑，创建 5 个关键帧
+
+![pic](http://www.surebrz.com/origin/imgs/tonypas-tile-based-tutorials/p07_3.gif)
+
+
+在第 1 个关键帧中放入 `char_up` 影片剪辑，第 2 个关键帧放入 `char_left` 影片剪辑，第 4 个放入 `char_right`，第 5 个放入 `char_down`。向左和向右的动作可以用相同的影片剪辑，只需要将其中一个水平翻转。现在，确认每个移动动画的示例拥有实例名 `char`。再检查一下关键帧 1 2 4 5，是否都命名为 `char`？别担心，如果你现在还不明白为什么这些动作放在这几个帧里，没关系，后续我们在移动的代码中会解释的。
+
+![pic](http://www.surebrz.com/origin/imgs/tonypas-tile-based-tutorials/p07_4.gif)
+
+
+好了，到了代码时间。
+
+## 编码
+
+我们的英雄将会移动，而移动需要指定移动速度。因此给我们的英雄对象增加一个速度属性：
+
+```
+char = {xtile:2, ytile:1, speed:4};
+```
+
+速度是我们的英雄在屏幕中移动的像素的数值。数值越高他移动的越快，越低移动的越慢。使用整数作为速度是一个比较好的实践，而使用小数会使得计算结果非常奇怪，你也看不出 10 像素和 10.056873 像素的区别。
+
+你应该还记得（如果不记得的话，请回顾上一章节），我们创建了 `_root.char` 来处理英雄的信息，并且将 `char` 视频剪辑放在了 `tiles` 影片剪辑里。为了把我们的英雄叫起来移动，我们需要两个新的函数，以及一个用于检查按键输入情况的影片剪辑控制器。
+
+将一个 `empty` 影片剪辑拖到舞台上，你可以把它放在视野以外的地方。它只是用来做函数调用的，放在哪都没有关系。给这个影片剪辑添加这些代码：
+
+```
+onClipEvent (enterFrame)
+{
+	_root.detectKeys();
+}
+```
+
+你可以看到，每一帧我们都会调用函数 `detectKeys`，下边我们给它编写代码：
+
+```
+function detectKeys()
+{
+	var ob = _root.char;
+	var keyPressed = false;
+	if (Key.isDown(Key.RIGHT))
+	{
+		keyPressed = _root.moveChar(ob, 1, 0);
+	}
+	else if (Key.isDown(Key.LEFT))
+	{
+		keyPressed = _root.moveChar(ob, -1, 0);
+	}
+	else if (Key.isDown(Key.UP))
+	{
+		keyPressed = _root.moveChar(ob, 0, -1);
+	}
+	else if (Key.isDown(Key.DOWN))
+	{
+		keyPressed = _root.moveChar(ob, 0, 1);
+	}
+	if (!keyPressed)
+	{
+		ob.clip.char.gotoAndStop(1);
+	}
+	else
+	{
+		ob.clip.char.play();
+	}
+}
+```
+
+首先我们定义 2 个变量，设置 `ob` 来指代 `_root.char`（记住，这个是我们用来处理英雄信息的变量），设置 `keyPressed` 为 `false`，用来后边判断是否按下了按键。
+
+接下来有 4 个相似的代码段，每个都用来判断一个方向键是否按下。如果按下了方向键，他们会调用另一个函数 `moveChar`，像这样：
+
+```
+keyPressed = _root.moveChar(ob, 1, 0);
+```
+
+这行调用 `moveChar` 函数，使用 3 个参数：第一个是变量 ob，表示我们的 `char` 对象，后两个会传入 -1、1 或 0，用来说明我们的英雄是通过修改 `x` 坐标来水平移动（第二段），还是通过修改 `y` 坐标来垂直移动（第三段）。我们将返回值赋给变量 `keyPressed`，后边你会很快看到 `moveChar` 函数总是返回 `true`，如果有任何方向键被按下，变量 `keyPressed` 都会被赋值为 `true`。
+
+最后一段代码检查变量 `keyPressed` 的值，如果是 `false`，表示没有按下方向键，也就是说我们用 `gotoAndStop(1)` 来停止行走动画。如果值为 `true`，我们将会继续播放行走动画。
+
+接着是第二个函数：
+
+```
+function moveChar(ob, dirx, diry)
+{
+	ob.x += dirx * ob.speed;
+	ob.y += diry * ob.speed;
+	ob.clip.gotoAndStop(dirx + diry * 2 + 3);
+	ob.clip._x = ob.x;
+	ob.clip._y = ob.y;
+	return (true);
+}
+```
+
+可以看到，`moveChar` 函数接受 3 个参数，变量 `ob` 是要移动的对象，`dirx` 和 `diry` 是表示在 x 或 y 坐标轴上移动的距离，这是一个非常通用的函数，我们可以使用它来移动游戏里的所有物品，如果我们有飞行的子弹，我们可以调用 `moveChar` 函数，传入子弹的飞行方向，如果有移动中的敌人，我们也可以再次使用这个函数来让他移动。
+
+下两行将 `ob.speed` 加到对象的 `x` 或 `y` 变量上，同样的，如果我们传不同的对象（子弹或敌人），他们会有不同的速度。当我们检测到右方向键按下时，使用 `1, 0` 调用 `moveChar`，此时 `dirx = 1`，`diry = 0`。这时 `x` 将加上速度的值，而 `y` 保持不变。如果我们用 `0, -1` （上方向键）调用，那么 `y` 将减去速度的值，`x` 保持不变。
+
+记住，如果我们有更多的移动条件，比如碰撞或者重力，我们会在这里计算 `x` 和 `y` 的值，这个操作会在真正修改影片剪辑的坐标值之前。这也比直接使用 `mc.hitTest` 更好。
+
+下边这行代码：
+
+```
+ob.clip.gotoAndStop(dirx + diry * 2 + 3);
+```
+
+让角色的影片剪辑设置到正确的朝向上。你可以计算一下 `dirx/diry` 的所有情况（只有 4 组不同的情况，并不难计算），你会看到朝向对应的帧序号和我们在文章一开始设置的正好一致。
+
+没有计算器是吧？让我们来看下这是怎么工作的：`→` 右方向键按下时，`dirx = 1`, `diry = 0`，找一下对应的帧序号：`diry * 2 = 0`，`dirx + 0 + 3` = `1 + 3` = `4`，将会显示第 4 帧，而第 4 帧是我们设置的 `char_right` 动画。
+
+下边 2 行将 `x/y` 变量传给影片剪辑的 `_x/_y` 坐标。
+
+最后，我们将函数返回 `true`，使得 `keyPressed` 变量拥有正确的值。
+
+与墙壁的碰撞将在下一章实现，那会非常有趣 :)
+
+你可以在这里下载本章节的代码：[fla](http://www.gotoandplay.it/_articles/2004/02/tonypa/keysToMove.fla) / [镜像](http://www.surebrz.com/origin/imgs/tonypas-tile-based-tutorials/keysToMove.fla)
 
 # 墙壁碰撞
 

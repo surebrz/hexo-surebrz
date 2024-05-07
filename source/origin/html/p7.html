@@ -1,0 +1,311 @@
+<!doctype html>
+<html>
+<head>
+<script src="https://pixijs.download/release/pixi.js"></script>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    html,body {
+        width: 100%;
+        height: 100%;
+        overflow:hidden;
+    }
+</style>
+</head>
+<body>
+<div id="p5_div" style="width:240px;height:180px;">
+</div>
+</body>
+  
+<script type="module">
+    // 键盘事件处理
+    let keyStates = {};
+    function keyboard(keyCode) {
+        let key = {};
+        key.code = keyCode;
+        key.isDown = false;
+        key.isUp = true;
+        key.press = undefined;
+        key.release = undefined;
+        //The `downHandler`
+        key.downHandler = event => {
+            if (event.keyCode === key.code) {
+            if (key.isUp && key.press) key.press();
+            key.isDown = true;
+            key.isUp = false;
+            }
+            event.preventDefault();
+        };
+        //The `upHandler`
+        key.upHandler = event => {
+            if (event.keyCode === key.code) {
+            if (key.isDown && key.release) key.release();
+            key.isDown = false;
+            key.isUp = true;
+            }
+            event.preventDefault();
+        };
+        //Attach event listeners
+        window.addEventListener(
+            "keydown", key.downHandler.bind(key), false
+        );
+        window.addEventListener(
+            "keyup", key.upHandler.bind(key), false
+        );
+        return key;
+    }
+    //Capture the keyboard arrow keys
+    let left = keyboard(37),
+      up = keyboard(38),
+      right = keyboard(39),
+      down = keyboard(40);
+      
+	var keyPressed = false;
+    //Left arrow key `press` method
+    left.press = () => {
+        keyStates[37] = true;
+    };
+    //Left arrow key `release` method
+    left.release = () => {
+        keyStates[37] = false;
+    };
+    //Up
+    up.press = () => {
+        keyStates[38] = true;
+    };
+    up.release = () => {
+        keyStates[38] = false;
+    };
+    //Right
+    right.press = () => {
+        keyStates[39] = true;
+    };
+    right.release = () => {
+        keyStates[39] = false;
+    };
+    //Down
+    down.press = () => {
+        keyStates[40] = true;
+    };
+    down.release = () => {
+        keyStates[40] = false;
+    };
+
+
+    const app = new PIXI.Application();
+    await app.init({ width: 240, height: 180 })
+    document.getElementById("p5_div").appendChild(app.canvas);
+    let graphics = new PIXI.Graphics()
+    .rect(0, 0, 240, 180)
+    .fill(0x000000);
+    app.stage.addChild(graphics);
+    // sprite sheets
+    const charSheetData = {
+        "frames": {
+            "d_1": {
+                "frame": {"x":0, "y":16, "w":17, "h":15},
+                "spriteSourceSize": {"x":3,"y":8,"w":24,"h":24},
+                "sourceSize": {"w":24,"h":24}
+            },
+            "d_2": {
+                "frame": {"x":0, "y":16, "w":17, "h":15},
+                "spriteSourceSize": {"x":4,"y":6,"w":24,"h":24},
+                "sourceSize": {"w":24,"h":24}
+            },
+            "l_1": {
+                "frame": {"x":18, "y":0, "w":15, "h":17},
+                "spriteSourceSize": {"x":3,"y":4,"w":24,"h":24},
+                "sourceSize": {"w":24,"h":24}
+            },
+            "l_2": {
+                "frame": {"x":18, "y":0, "w":15, "h":17},
+                "spriteSourceSize": {"x":3,"y":3,"w":24,"h":24},
+                "sourceSize": {"w":24,"h":24}
+            },
+            "r_1": {
+                "frame": {"x":18, "y":18, "w":15, "h":17},
+                "spriteSourceSize": {"x":6,"y":5,"w":24,"h":24},
+                "sourceSize": {"w":24,"h":24}
+            },
+            "r_2": {
+                "frame": {"x":18, "y":18, "w":15, "h":17},
+                "spriteSourceSize": {"x":6,"y":3,"w":24,"h":24},
+                "sourceSize": {"w":24,"h":24}
+            },
+            "u_1": {
+                "frame": {"x":0, "y":0, "w":17, "h":15},
+                "spriteSourceSize": {"x":3,"y":3,"w":24,"h":24},
+                "sourceSize": {"w":24,"h":24}
+            },
+            "u_2": {
+                "frame": {"x":0, "y":0, "w":17, "h":15},
+                "spriteSourceSize": {"x":4,"y":1,"w":24,"h":24},
+                "sourceSize": {"w":24,"h":24}
+            }
+
+        },
+        "meta": {
+            "image": "images/p7_sprites.png",
+            "size": {"w": 34, "h": 36},
+            "scale": "1"
+        },
+        animations: {
+            up: ["u_1", "u_2"],
+            left: ["l_1", "l_2"],
+            right: ["r_1", "r_2"],
+            down: ["d_1", "d_2"],
+        }
+    };
+    console.log(charSheetData.meta.image);
+    const charTexture = await PIXI.Assets.load(charSheetData.meta.image);
+    const charSheet = new PIXI.Spritesheet(
+        charTexture,
+        charSheetData
+    );
+    await charSheet.parse();
+    const charSprite = {
+        sprites: {
+            1: new PIXI.AnimatedSprite(charSheet.animations.up),
+            2: new PIXI.AnimatedSprite(charSheet.animations.left),
+            4: new PIXI.AnimatedSprite(charSheet.animations.right),
+            5: new PIXI.AnimatedSprite(charSheet.animations.down)
+        }
+    }
+    Object.values(charSprite.sprites).forEach(sprite => {
+        app.stage.addChild(sprite);
+        sprite.animationSpeed = 0.166;
+        sprite.visible = false;
+        sprite.anchor.set(0.5);
+    });
+    charSprite.sprites[1].visible = true;
+    charSprite.sprites[1].play();
+    charSprite.setX = function(x) {
+        Object.values(charSprite.sprites).forEach(sprite => {
+            sprite.x = x;
+        });
+    };
+    charSprite.setY = function(y) {
+        Object.values(charSprite.sprites).forEach(sprite => {
+            sprite.y = y;
+        });
+    };
+    charSprite.playAnim = function(index) {
+        Object.keys(charSprite.sprites).forEach(key => {
+            if (key != index) {
+                charSprite.sprites[key].visible = false;
+            }
+        });
+        charSprite.sprites[index].visible = true;
+        charSprite.sprites[index].play();
+    }
+    charSprite.stopAnim = function() {
+        Object.values(charSprite.sprites).forEach(sprite => {
+            sprite.stop();
+        });
+    }
+
+    // 
+    
+    let myMap = [
+        [1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 1, 0, 0, 0, 0, 1],
+        [1, 0, 0, 0, 0, 1, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1]
+    ];
+    
+    let game={tileW:30, tileH:30};
+    let char={xtile:2, ytile:1, speed:4};
+
+    // tiles
+    game.clip = {};
+
+    game.clip.char = charSprite;
+    char.clip = game.clip.char;
+    
+    //walkable tile
+    game.Tile0 = function () {};
+    game.Tile0.prototype.walkable = true;
+    game.Tile0.prototype.frame = 1;
+    
+    //wall tile
+    game.Tile1 = function () {};
+    game.Tile1.prototype.walkable = false;
+    game.Tile1.prototype.frame = 2;
+
+    buildMap(myMap);
+    
+    var ob = char;
+    let ticker = PIXI.Ticker.shared;
+    const TimeLimit = 60 / 24;
+    let timeCount = 0;
+    ticker.add(function (time) {
+        timeCount += time.deltaTime;
+        // console.log(timeCount);
+        if (timeCount > TimeLimit) {
+            timeCount = 0;
+        } else {
+            return;
+        }
+        keyPressed = false;
+        if (keyStates[37]) {
+            keyPressed = moveChar(ob, -1, 0);
+        }
+        if (keyStates[38]) {
+            keyPressed = moveChar(ob, 0, -1);
+        }
+        if (keyStates[39]) {
+            keyPressed = moveChar(ob, 1, 0);
+        }
+        if (keyStates[40]) {
+            keyPressed = moveChar(ob, 0, 1);
+        }
+        if (!keyPressed) {
+            ob.clip.stopAnim();
+        }
+    });
+
+    function moveChar(ob, dirx, diry) {
+        ob.x += dirx * ob.speed;
+        ob.y += diry * ob.speed;
+        ob.clip.playAnim(dirx + diry * 2 + 3);
+        ob.clip.setX(ob.x);
+        ob.clip.setY(ob.y);
+        return true;
+    }
+
+    // 模拟 flash
+    function gotoAndStop(clip, frame) {
+        let color = frame == 1 ? 0xffffff : 0x000000;
+        graphics.rect(clip._x, clip._y, game.tileW, game.tileH)
+                .fill(color);
+    }
+    function buildMap (map) {
+        game.clip = {};
+        var mapWidth = map[0].length;
+        var mapHeight = map.length;
+        for (var i = 0; i < mapHeight; ++i)
+        {
+            for (var j = 0; j < mapWidth; ++j)
+            {
+                var name = "t_" + i + "_" + j;
+                game[name] = new game["Tile" + map[i][j]];
+                game.clip[name] = {};
+                game.clip[name]._x = (j * game.tileW);
+                game.clip[name]._y = (i * game.tileH);
+                gotoAndStop(game.clip[name], game[name].frame);
+            }
+        }
+        
+        char.x = (char.xtile * game.tileW) + game.tileW / 2;
+        char.y = (char.ytile * game.tileH) + game.tileH / 2;
+        char.width = 24;
+        char.height = 24;
+        charSprite.setX(char.x);
+        charSprite.setY(char.y);
+    }
+</script>
+</html>

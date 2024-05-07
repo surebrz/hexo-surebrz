@@ -27,7 +27,6 @@
     .rect(0, 0, 240, 180)
     .fill(0x000000);
     app.stage.addChild(graphics);
-
     // 
     let myMap = [
         [1, 1, 1, 1, 1, 1, 1, 1],
@@ -39,6 +38,7 @@
     ];
     
     let game={tileW:30, tileH:30};
+    let char={xtile:2, ytile:1};
     
     //walkable tile
     game.Tile0 = function () {};
@@ -58,6 +58,12 @@
         graphics.rect(clip._x, clip._y, game.tileW, game.tileH)
                 .fill(color);
     }
+    // 模拟设置 x y，注意英雄的锚点在图片中心而不是左上角
+    function char_clip_x_y(x, y) {
+        let color = 0xff0000;
+        graphics.rect(x - 12, y - 12, 24, 24)
+            .fill(color);
+    }
     function buildMap (map) {
         game.clip = {};
         var mapWidth = map[0].length;
@@ -74,6 +80,12 @@
                 gotoAndStop(game.clip[name], game[name].frame);
             }
         }
+        
+        char.x = (char.xtile * game.tileW) + game.tileW / 2;
+        char.y = (char.ytile * game.tileH) + game.tileH / 2;
+        char.width = 24;
+        char.height = 24;
+        char_clip_x_y(char.x, char.y);
     }
 </script>
 </html>
