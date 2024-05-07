@@ -546,7 +546,271 @@ ob.clip.gotoAndStop(dirx + diry * 2 + 3);
 
 # 墙壁碰撞
 
+## 墙壁碰撞
+
+英雄只会行走却不会撞墙，这一点也不好玩。我们得让英雄感受一下硬邦邦砖墙或是别的什么不能行走的瓦片的力量。
+
+<iframe id="iframe_p8" width="240"
+  height="180" src="http://www.surebrz.com/origin/html/p8.html"></iframe>
+
+[swf](http://www.gotoandplay.it/_articles/2004/02/tonypa/img/p08_1.swf) / [镜像](http://www.surebrz.com/origin/imgs/tonypas-tile-based-tutorials/p08_1.swf)
+
+在第一章中，我们给瓦片设置了 `walkable` 属性，当表示某位置瓦片的对象的 `walkable` 属性设置为 `false` 时，英雄将不能移动到那里。当设置为 `true` 时，可以移动到那（这就是“逻辑”，小学就学过了，不过有些人大学才学，可怜的娃）。
+
+为了让这个魔法生效，我们要这样做：当方向键被按下时，我们先判断对应的瓦片是否可以行走，如果可以，我们就让英雄移动，如果不能行走（墙壁），我们就忽略那次的按键。
+
+这是一个完美的碰撞的例子：
+
+![pic](http://www.surebrz.com/origin/imgs/tonypas-tile-based-tutorials/p08_2.gif)
+
+
+英雄站在墙边，并且下一步就会进到那个方向的墙内部。我们不能让这种情况发生，所以，嘿，别动！但是这个世界并不完美，假如只是英雄身体的一部分碰撞了：
+
+![pic](http://www.surebrz.com/origin/imgs/tonypas-tile-based-tutorials/p08_3.gif)
+
+
+这就需要我们计算英雄 4 角的碰撞。如果任何角（这个例子里是左下角）将会进入墙内，我们就让英雄停下。
+
+或者如果英雄还没有紧邻墙壁，但是下一步也会进入到墙内：
+
+![pic](http://www.surebrz.com/origin/imgs/tonypas-tile-based-tutorials/p08_4.gif)
+
+
+那么我们就让英雄紧贴着墙：
+
+![pic](http://www.surebrz.com/origin/imgs/tonypas-tile-based-tutorials/p08_5.gif)
+
+
+“噢不！”你也许要哭了，“这根本做不到！”别担心，其实并不难。
+
+## 让我看看四个角
+
+我们不想让英雄身体的任何部分进到墙里，所以我们不得使用不止一个点，而是 4 个点来检查英雄和不可行走瓦片的碰撞，我们用拐角的 4 点来做检查，因为大部分英雄都是矩形（没错！）。
+
+为了实现这个功能，我们新建一个函数 `getMyCorners`：
+
+```
+function getMyCorners (x, y, ob)
+{
+	ob.downY = Math.floor((y + ob.height - 1) / game.tileH);
+	ob.upY = Math.floor((y - ob.height) / game.tileH);
+	ob.leftX = Math.floor((x - ob.width) / game.tileW);
+	ob.rightX = Math.floor((x + ob.width - 1) / game.tileW);
+
+	//check if they are walls 
+
+	ob.upleft = game["t_" + ob.upY + "_" + ob.leftX].walkable;
+	ob.downleft = game["t_" + ob.downY + "_" + ob.leftX].walkable;
+	ob.upright = game["t_" + ob.upY + "_" + ob.rightX].walkable;
+	ob.downright = game["t_" + ob.downY + "_" + ob.rightX].walkable;
+}
+```
+
+这个函数有 3 个参数：`x/y` 表示舞台上 object 的中心点坐标（像素坐标），以及 `object`。等等，你也许会好奇，我们明明已经知道了 `object` 的 `x/y` 坐标，就存在 `char` 对象里呀？没错，但是我们保存的是 `char` 的 **当前** 位置，这里我们要计算的是它 **将要移动到** 的位置。
+
+首先，我们计算出角色要移动的瓦片。他可能中心在一个瓦片上而左侧的边在另一个瓦片上，而他的最高点（头顶）可能在第三个瓦片上。将变量 `y` 加上英雄的高度，然后除以瓦片的高度，我们就得到了他的最低点（`downY`）所站在的瓦片。
+
+最下边 4 行我们用计算出来的点来获取每个角所在的瓦片的 `walkable` 属性值，比如左上角 `upleft` 使用 `upY` 和 `leftX` 变量，就像你看到的，所有的点也都被存在了 `ob` 对象里，后边将会取出来用于移动 `char`。我想再次说明一下，`getMyCorner` 函数可以应用于任何可以移动的物体，不仅仅是英雄。
+
+## 移动
+
+当我们知道了角色四角即将进入的瓦片的类型后，就可以简单的编写 `char` 的移动了：如果所有角都是可行走的，就移动，否则就不动。另外还要做一件事，把英雄放在紧邻的要碰撞的墙边。我们修改 `moveChar` 函数来处理所有 4 种可能的方向，看起来可能比较复杂，不过大部分代码只是重复的 4 个方向的处理，让我们看一下函数内容：
+
+```
+function moveChar(ob, dirx, diry)
+{
+	getMyCorners (ob.x, ob.y + ob.speed * diry, ob);
+	if (diry == -1)
+	{
+		if (ob.upleft and ob.upright)
+		{
+			ob.y += ob.speed * diry;
+		}
+		else
+		{
+			ob.y = ob.ytile * game.tileH + ob.height;
+		}
+	}
+	if (diry == 1)
+	{
+		if (ob.downleft and ob.downright)
+		{
+			ob.y += ob.speed * diry;
+		}
+		else
+		{
+			ob.y = (ob.ytile + 1) * game.tileH - ob.height;
+		}
+	}
+	getMyCorners (ob.x + ob.speed * dirx, ob.y, ob);
+	if (dirx == -1)
+	{
+		if (ob.downleft and ob.upleft)
+		{
+			ob.x += ob.speed * dirx;
+		}
+		else
+		{
+			ob.x = ob.xtile * game.tileW + ob.width;
+		}
+	}
+	if (dirx == 1)
+	{
+		if (ob.upright and ob.downright)
+		{
+			ob.x += ob.speed * dirx;
+		}
+		else
+		{
+			ob.x = (ob.xtile + 1) * game.tileW - ob.width;
+		}
+	}
+	ob.clip._x = ob.x;
+	ob.clip._y = ob.y;
+	ob.clip.gotoAndStop(dirx + diry * 2 + 3);
+	ob.xtile = Math.floor(ob.clip._x / game.tileW);
+	ob.ytile = Math.floor(ob.clip._y / game.tileH);
+	return (true);
+}
+```
+
+就像往常一样，`moveChar` 函数接收 `object` 和键盘检测后的方向，下边这行：
+
+```
+getMyCorners (ob.x, ob.y + ob.speed * diry, ob);
+```
+
+对垂直方向的拐角点（`diry` 不等于 0）进行计算，计算以后，我们使用每个瓦片的 `walkable` 属性来判断影像是否可以走上去：
+
+```
+if (diry == -1)
+{
+	if (ob.upleft and ob.upright)
+	{
+		ob.y += ob.speed * diry;
+	}
+	else
+	{
+		ob.y = ob.ytile * game.tileH + ob.height;
+	}
+}
+```
+
+这个代码块用来处理向上的移动。当按下 `↑` 上方向键时，`diry` 的值为 `-1`，我们使用 `getMyCorner` 函数计算后的 `ob.upleft` 和 `ob.upright` 来判断是否可行走，如果都是 `true`，那么左上和右上的瓦片都可以行走，我们就让 `char` 像之前一样通过将 `y` 坐标加上 `speed * diry` 来移动。
+
+但是如果一个角即将进入墙内，`ob.upleft` 或者 `ob.upright` 是 `false` 时，我们把那个对象放在紧贴着墙的位置上。对于紧邻上方墙的 `char` 来说，他的中心将会被设置成距离下边框 `char.height` 这么远的地方（`char.height` 的值为 `char.clip.height / 2`，参考“英雄”那个章节）。
+
+![pic](http://www.surebrz.com/origin/imgs/tonypas-tile-based-tutorials/p08_6.gif)
+
+`ob.ytile * game.tileH` 将会把角色中心放在两个图块的边线上，然后加上 `height` 属性的值来让他下移。使用同样的方法让 `moveChar` 函数处理向下（`diry == 1`）、向左（`dirx == -1`）、向右（`dirx == 1`）的情况。
+
+最后一行将角色的影片剪辑放置在计算后的坐标上，让角色显示正确的帧动画，计算角色新的中心点瓦片（`xtile`、`ytile`）。和上节一样，函数返回 `true`。
+
+你可以在这里下载本章节的代码：[fla](http://www.gotoandplay.it/_articles/2004/02/tonypa/hitTheWall.fla) / [镜像](http://www.surebrz.com/origin/imgs/tonypas-tile-based-tutorials/hitTheWall.fla)
+
 # 开门
+
+## 开门
+
+你能在一个房间里呆多久呢？你可以盯着同一张图片看多久？对，我们需要更多的房间来探索，也就是说，我们需要一个方法变更地图，从瓦片信息中创建新地图，然后把英雄放在正确的位置。
+
+<iframe id="iframe_p8" width="240"
+  height="180" src="http://www.surebrz.com/origin/html/p9.html"></iframe>
+
+[swf](http://www.gotoandplay.it/_articles/2004/02/tonypa/img/p09_1.swf) / [镜像](http://www.surebrz.com/origin/imgs/tonypas-tile-based-tutorials/p09_1.swf)
+
+为了创建两个房间，我们要定义两个地图：
+
+```
+myMap1 = [
+[1, 1, 1, 1, 1, 1, 1, 1],
+[1, 0, 0, 0, 0, 0, 0, 1],
+[1, 0, 1, 0, 0, 0, 0, 1],
+[1, 0, 0, 0, 0, 1, 0, 1],
+[1, 0, 0, 0, 0, 0, 0, 2],
+[1, 1, 1, 1, 1, 1, 1, 1]
+];
+
+
+myMap2 = [
+[1, 1, 1, 1, 1, 1, 1, 1],
+[1, 0, 0, 0, 0, 0, 0, 1],
+[1, 0, 1, 0, 0, 0, 0, 1],
+[1, 0, 0, 0, 0, 1, 0, 1],
+[3, 0, 0, 0, 0, 0, 0, 1],
+[1, 1, 1, 1, 1, 1, 1, 1]
+];
+```
+在 `game` 对象中我们也要记下当前地图的编号：
+
+```
+game={tileW:30, tileH:30, currentMap:1}
+```
+
+这样，我们就从 `myMap1` 开始探索。调用 `buildMap` 函数吧，我们计算地图信息时需要使用 `_root["myMap" + game.currentMap]`，当 `currentMap` 为 1 时，我们就取到了 `myMap1`：
+
+```
+buildMap(_root["myMap" + game.currentMap])
+```
+
+接着，我们需要一个新对象来表示 `门`：
+
+```
+game.Doors = function (newmap, newcharx, newchary)
+{
+	this.newmap = newmap;
+	this.newcharx = newcharx;
+	this.newchary = newchary;
+};
+game.Doors.prototype.walkable = true;
+game.Doors.prototype.frame = 3;
+game.Doors.prototype.door = true;
+game.Tile2 = function () { };
+game.Tile2.prototype = new game.Doors(2, 1, 4);
+game.Tile3 = function () { };
+game.Tile3.prototype = new game.Doors(1, 6, 4);
+```
+
+你已经猜到啦，门的瓦片可以踩上去，他显示第 3 帧图片，他有一个新的 `door` 属性并且为 `true`。我们将使用这个属性来判断英雄是否站在门上。
+
+门使用了一种叫做 `继承` 的东西，听起来很可怕，不过其实是一个很好用的东西。`doors` 对象全都使用 `Doors` 模版，所有包含门的瓦片继承了 `door` 的所有属性，比如他们都是可以行走的图块，并且显示第 3 帧图片。
+
+我们创建的所有门都必须有下列信息：下一个要显示的地图编号，角色的新的 `x` 和 `y` 坐标。如果你不把角色移动到新位置，那么地图的瓦片变化了，但是英雄还站在原来的地方，这看起来并不合理。另外，需要避免英雄在新地图中被放在门所在的位置上。如果新的 `x/y` 坐标依然是门，当角色移动时，新地图的门就会把英雄重新传送回来。记住，把英雄放在新地图的门旁边的瓦片上！
+
+创建新的 `Doors` 对象时，我们传入 3 个参数：`newmap`、`newcharx`、`newchary`，之后这些变量会被保存在他的属性中。当数字 2 设置在 `map` 数组里时，我们知道它将被用 `Tile2` 来创建瓦片，而 `Tile2` 对象将拥有 `Doors` 的所有属性。`Tile2` 对象将会给 `Doors` 传入 `newmap = 2`，所以会将英雄传送到 `map2`。你可以在一个地推设置不止 1 扇门，你也许会希望在不同的地图里设置 `Tile2` 类型的门，他们都会把英雄传送到 `map2`。
+
+## 更多代码
+
+在 `moveChar` 函数中，将以下代码添加到末尾 `return true` 之前：
+
+```
+if (game["t_" + ob.ytile + "_" + ob.xtile].door and ob == _root.char)
+{
+	changeMap(ob);
+}
+```
+
+当我们移动了 `char`（或者别的可以移动的物品）之后，我们将会检查它所站的瓦片是否是门。同时因为我们不想让子弹或者敌人踩到门上时切换地图，我们也会同时检查当前物品是否是英雄。我们用 `changeMap` 函数来处理地图切换：
+
+```
+function changeMap(ob)
+{
+	var name = "t_" + ob.ytile + "_" + ob.xtile;
+	game.currentMap = game[name].newMap;
+	ob.ytile = game[name].newchary;
+	ob.xtile = game[name].newcharx;
+	ob.frame = ob.clip._currentframe;
+	buildMap(_root["myMap" + game.currentMap]);
+}
+```
+这段代码需要认真看一下，从门的瓦片上取到 `currentMap`、`ytile` 和 `xtile` 的值，新的 `ob.frame` 属性将会保存英雄当前的方向数据，没有这段的话我们的英雄每次切换地图都会变成第 1 帧的图片。在 `buildMap` 方法设置了 `char` 的影片剪辑后需要使用这行代码：
+
+```
+char.clip.gotoAndStop(char.frame);
+```
+以上，创建一些地图然后和门玩耍吧。
+
+你可以在这里下载本章节的代码：[fla](http://www.gotoandplay.it/_articles/2004/02/tonypa/openDoors.fla) / [镜像](http://www.surebrz.com/origin/imgs/tonypas-tile-based-tutorials/openDoors.fla)
 
 # 跳跃
 
