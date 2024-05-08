@@ -714,7 +714,7 @@ if (diry == -1)
 
 你能在一个房间里呆多久呢？你可以盯着同一张图片看多久？对，我们需要更多的房间来探索，也就是说，我们需要一个方法变更地图，从瓦片信息中创建新地图，然后把英雄放在正确的位置。
 
-<iframe id="iframe_p8" width="240"
+<iframe id="iframe_p9" width="240"
   height="180" src="http://www.surebrz.com/origin/html/p9.html"></iframe>
 
 [swf](http://www.gotoandplay.it/_articles/2004/02/tonypa/img/p09_1.swf) / [镜像](http://www.surebrz.com/origin/imgs/tonypas-tile-based-tutorials/p09_1.swf)
@@ -814,6 +814,173 @@ char.clip.gotoAndStop(char.frame);
 
 # 跳跃
 
+## 跳跃
+
+让我们把我们的游戏从顶视角转为侧视角，然后增加跳跃功能。在这个例子中，我们会从侧面观察，我们的英雄可以用左右键移动，也可以用空格键跳跃，就像这样：
+
+<iframe id="iframe_p10" width="240"
+  height="180" src="http://www.surebrz.com/origin/html/p10.html"></iframe>
+
+[swf](http://www.gotoandplay.it/_articles/2004/02/tonypa/img/p10_1.swf) / [镜像](http://www.surebrz.com/origin/imgs/tonypas-tile-based-tutorials/p10_1.swf)
+
+
+## 基本跳跃
+
+跳跃从举高高开始，你还记得，向上在 Flash 的舞台上意味着 `y` 坐标的减少。因此，我们这样计算： `new_y = current_y - jumpspeed`。如果我们这么计算一次，英雄就会向上移动 `jumpspeed` 的距离然后停在那里。没错，我们需要一直在英雄跳跃旗舰一直计算新的 `y` 值，但是我们必须让 `jumpspeed` 变化，否则我们的英雄就飞到天上再也回不来了。
+
+为了计算 `jumpspeed`，我们需要定义新的变量“重力” `gravity`。重力把英雄拉回到地面，向下。在每步计算中我们都会给 `jumpspeed` 增加 `gravity` 的值：`jumpspeed = jumpspeed + gravity`，你可以改变 `gravity` 的数值，如果你让重力变少，英雄就飞得更高（就像泡泡），增加 `gravity`，英雄就会更快地落地（就像石头）。因为我们有很多的物体，你可以赋予他们不同的重力值。
+
+让我们看一个例子，`jumpspeed` 以 -10 开始，`gravity` 以 2 开始，首先，英雄向上移动 10 像素，然后 `jumpspeed` 变成了 -8，下一步，向上移动 8 像素，`jumpspeed` 变为 6。几步以后，`jumpspeed` 变为 0，意味着英雄不会再向上移动了，下一步 `jumpspeed` 变为正数，英雄将开始下落。
+
+但是当英雄在跳跃的过程中撞到了固体瓦片（墙），如果英雄是向上撞墙，我们需要把 `jumpspeed` 设置为 0，然后英雄开始下落，如果是向下撞墙，表示他落在地上，跳跃结束了。
+
+在基于瓦片的游戏中，需要注意，速度的值不能大于瓦片的尺寸。如果英雄速度很高，将会无法检测下一个瓦片，而且可能传过墙壁，也许有的魔法师可以穿墙，但是在游戏里这通常是个 bug。
+
+正如你见到的，跳跃不会在水平方向上起效，水平方向的处理还和往常一样，我们只需要检查左右移动后英雄脚下是否还是固体瓦片，如果不是，他将会下落。
+
+## 做我的英雄
+
+我们给角色增加一些属性：
+
+```
+char = {xtile:2, ytile:1, speed:4, jumpstart:-18, gravity:2, jump:false};
+```
+
+`speed` 属性设置了左右移动的速度，`jumpstart` 是开始跳跃时的跳跃速度，`gravity` 将会把英雄拉回地面，`jump` 用来表示英雄现在是在跳跃（`jump = true`）还是站在/走在/跑在/坐在地上（`jump = false`）。
+
+下边一行将修改 `buildMap` 函数中我们设置了英雄的起始位置以后的部分。在以前的例子中，我们把英雄放在了瓦片中央的位置，但是这样一来我们的英雄在地图加载后会总是一开始就处在掉落的状态。我们将让英雄站在起始瓦片的边缘（别忘了把设置 `char.height` 后的那行移除）：
+
+```
+char.y = ((char.ytile + 1) * game.tileW) - char.height;
+```
+
+`changeMap` 和 `getMyCorners` 函数没有变化。
+
+## 给我翅膀
+
+让我们从按键检测函数开始吧，我们需要增加空格键的检测，移除上下键的检测。
+
+```
+function detectKeys()
+{
+	var ob = _root.char;
+	var keyPressed = false;
+	if (Key.isDown(Key.SPACE) and !ob.jump)
+	{
+		ob.jump = true;
+		ob.jumpspeed = ob.jumpstart;
+	}
+	if (Key.isDown(Key.RIGHT))
+	{
+		keyPressed = _root.moveChar(ob, 1, 0);
+	}
+	else if (Key.isDown(Key.LEFT))
+	{
+		keyPressed = _root.moveChar(ob, -1, 0);
+	}
+	if (ob.jump)
+	{
+		keyPressed = _root.jump(ob);
+	}
+	if (!keyPressed)
+	{
+		ob.clip.char.gotoAndStop(1);
+	}
+	else
+	{
+		ob.clip.char.play();
+	}
+}
+```
+
+你可以注意到，我们不会让角色在跳跃中可以再次跳跃（`!ob.jump`），空格键检测只会在一次新的跳跃中生效。如果按下了空格，英雄还没在跳跃状态，我们将设置变量 `jump` 为 `true` 然后给英雄一个起始速度。
+
+在左右键按下以后我们会检查变量 `jump` 是否为 `true`，如果是，我们将调用新的 `jump` 函数（`jump` 函数不是变量 `jump`，我名字取得有点问题，抱歉）。这个函数只要 `jump` 为 `true` 每帧都会调用，所以我们的英雄即使空格键没有按也会持续处在跳跃中。
+
+`jump` 函数将会给当前的 `jumpspeed` 加上重力的值，他会检查跳跃的速度有没有变得太大，如果是这样，他会把速度调整为瓦片的尺寸，最后一行会调用 `moveChar` 函数。
+
+```
+function jump (ob)
+{
+	ob.jumpspeed = ob.jumpspeed + ob.gravity;
+	if (ob.jumpspeed > game.tileH)
+	{
+		ob.jumpspeed = game.tileH;
+	}
+	if (ob.jumpspeed < 0)
+	{
+		moveChar(ob, 0, -1, -1);
+	}
+	else if (ob.jumpspeed > 0)
+	{
+		moveChar(ob, 0, 1, 1);
+	}
+	return (true);
+}
+```
+
+同时我们需要修改 `moveChar` 函数，在上一章里我们使用 `ob.speed` 来修改角色的位置，不过现在我们也需要 `jumpspeed`，而它每帧都在变化。修改 `moveChar` 方法的起始部分：
+
+```
+function moveChar(ob, dirx, diry, jump)
+{
+	if (Math.abs(jump) == 1)
+	{
+		speed = ob.jumpspeed * jump;
+	}
+	else
+	{
+		speed = ob.speed;
+	}
+	...
+```
+
+当 `moveChar` 是被 `jump` 函数调用时，`jump` 参数的值是 1 或 -1，该变量将会让 `speed` 变量通过 `ob.jumpspeed` 来计算值。当是被左右键检测调用时，`speed` 将等于 `ob.speed`，之前使用 `ob.speed` 计算的地方要换成 `speed`。
+
+在向上移动的代码中，如果与上方的墙壁碰撞了，我们会把 `jumpspeed` 的值改为 0：
+
+```
+ob.y = ob.ytile * game.tileH + ob.height;
+ob.jumpspeed = 0;
+```
+
+在向下移动的部分中如果我们检测到脚下是墙，我们将 `jump` 设置为 `false`：
+
+```
+ob.y = (ob.ytile + 1) * game.tileH - ob.height;
+ob.jump = false;
+```
+
+在左右移动的时候，我们增加一行代码，用来检测当英雄脚底离开了平台边缘时，他将会下落：
+
+```
+ob.x += speed * dirx;
+fall (ob);
+```
+
+所以我们需要编写的最后一个函数是 `fall`：
+
+```
+function fall (ob)
+{
+	if (!ob.jump)
+	{
+		getMyCorners (ob.x, ob.y + 1, ob);
+		if (ob.downleft and ob.downright)
+		{
+			ob.jumpspeed = 0;
+			ob.jump = true;
+		}
+	}
+}
+```
+
+在已经处于跳跃状态时，我们不会开始掉落，所以我们首先要检查 `jump` 变量是否为 `false`（英雄现在正站在地上）。如果我们站着，我们调用 `getMyCorners` 函数来检查英雄的四角，我们用 `ob.y + 1` 来检测比英雄坐标靠下 1 像素的地方是否可以行走，如果脚下两个角（左下和右下）都是可行走的瓦片，那意味着我们可爱的英雄站在空中了。
+
+为了修正不能站在空气中的情况。我们强迫英雄开始跳跃，将 `jump = true`，但是与按下空格键不同，我们将起始的跳跃速度设置为 0，这样英雄就开始下落了。
+
+你可以在这里下载本章节的代码：[fla](http://www.gotoandplay.it/_articles/2004/02/tonypa/jumping.fla) / [镜像](http://www.surebrz.com/origin/imgs/tonypas-tile-based-tutorials/jumping.fla)
+
 # 拟态墙壁
 
 # 楼梯
@@ -851,3 +1018,170 @@ char.clip.gotoAndStop(char.frame);
 # 更多寻路
 
 # 斜坡
+
+## 斜坡
+
+是时候看看如何添加斜坡了：
+
+<iframe id="iframe_p29" width="240"
+  height="180" src="http://www.surebrz.com/origin/html/p29.html"></iframe>
+
+[swf](http://www.gotoandplay.it/_articles/2004/02/tonypa/img/p29_1.swf) / [镜像](http://www.surebrz.com/origin/imgs/tonypas-tile-based-tutorials/p29_1.swf)
+
+很多人问过我：“我要怎么让英雄在斜坡瓦片上行走呢？”，而我通常会回答道：“地球上为什么会有你们这些想让英雄走在斜坡上的人?只在方块上走路不开心吗？你的英雄就不能跳到更高的瓦片上吗？”，然后他们说：“不行，我就是要用斜坡！”
+
+可能你不知道斜坡瓦片是神恶名样的，在这个图片上，英雄（叫 Charlie 的鸭子）正站在斜坡上：
+
+![pic](http://www.surebrz.com/origin/imgs/tonypas-tile-based-tutorials/p29_2.gif)
+
+（截图来自 Mike Wiering / Wiering Software 的 《CHARLIE II》）
+
+斜坡允许我们的英雄通过左右行走就走到在更高（或更低）的地方而不必跳跃（或下落）。因此，我们要讨论的斜坡将会是连接两个高度不同的瓦片的东西：
+
+![pic](http://www.surebrz.com/origin/imgs/tonypas-tile-based-tutorials/p29_3.gif)
+
+当左侧图片的英雄想要移动到右边时，他不得不跳到更高的瓦片上，但是通过斜坡，右侧图片里的英雄不需要跳跃了。没错，如果我们的英雄可以跳，那右边的英雄也可以通过跳跃来移动到目的地，不过不会跳跃的英雄就会很开心，因为他们不用跳了。
+
+## 涉及的问题
+
+当我们想实现斜坡瓦片时，我们会面临很多问题（我觉得你不会希望遇到问题）。首先是英雄在斜坡上的站立点。如果你还记得的话，我们的英雄是矩形的，所有的碰撞都基于他的四个角，在实现斜坡时就不能使用这个思路了，不然很多情况下英雄将会双脚离地。作为代替，我们把英雄的中心放在斜坡地面上，让他的一部分进入地面。
+
+![pic](http://www.surebrz.com/origin/imgs/tonypas-tile-based-tutorials/p29_4.gif)
+
+另外，游戏中的斜坡必须是讲一个瓦片的角和另一个的角连接起来的形式，在设置斜坡时必须非常小心，你不能使用其他角度和形状的斜坡，也不能设置奇怪的斜坡地图。
+
+![pic](http://www.surebrz.com/origin/imgs/tonypas-tile-based-tutorials/p29_5.gif)
+
+## 写代码实现吧
+
+我们从第 7 章“跳跃”的代码开始。
+
+定义新的瓦片类型：
+
+```
+game.Tile4 = function() {};
+game.Tile4.prototype.walkable = true;
+game.Tile4.prototype.slope = 1;
+game.Tile4.prototype.frame = 4;
+game.Tile5 = function() {};
+game.Tile5.prototype.walkable = true;
+game.Tile5.prototype.slope = -1;
+game.Tile5.prototype.frame = 5;
+```
+
+`Tile4` 是斜上的斜坡（/），`tile5` 是斜下的斜坡（\）。在对应的 `frame` 上给这些斜坡绘制合适的帧图片。
+
+新的函数是一个好东西，他闻起来是那么的新鲜，做了你从来没有做过的事情。让我们编写 `checkForSlopes` 函数：
+
+```
+function checkForSlopes (ob, diry, dirx)
+{
+  if (game["t_" + (ob.ytile + 1) + "_" + ob.xtile].slope and !ob.jump)
+  {
+    ob.ytile += 1;
+    ob.y += game.tileH;
+  }
+  if (game["t_" + ob.ytile + "_" + ob.xtile].slope and diry != -1)
+  {
+    if (diry == 1)
+    {
+      ob.y = (ob.ytile + 1) * game.tileH - ob.height;
+    }
+    var xpos = ob.x - ob.xtile * game.tileW;
+    ob.onSlope = game["t_" + ob.ytile + "_" + ob.xtile].slope;
+    ob.jump = false;
+    if(game["t_" + ob.ytile + "_" + ob.xtile].slope == 1)
+    {
+      ob.addy = xpos;
+      ob.clip._y = (ob.ytile + 1) * game.tileH - ob.height - ob.addy;
+    }
+    else
+    {
+      ob.addy = game.tileW - xpos;
+      ob.clip._y = (ob.ytile + 1) * game.tileH - ob.height - ob.addy;
+    }
+  }
+  else
+  {
+    if((ob.onSlope == 1 and dirx == 1) or (ob.onSlope == -1 and dirx == -1))
+    {
+      ob.ytile -= 1;
+      ob.y -= game.tileH;
+      ob.clip._y = ob.y;
+    }
+    ob.onSlope = false;
+  }
+}
+```
+
+这个函数将会在 `moveChar` 中被调用，包含有移动的变量 `dirx` 和 `diry`。
+
+第一个 `if` 语句判断当前瓦片下方的瓦片是不是斜坡，用来处理英雄站在不能行走的瓦片上，但是向左或向右移动后掉会到斜坡瓦片上的情况。如果英雄下方是斜坡，我们增加 `ytile` 和 `y` 的值，不过当英雄处在跳跃中的时候我们不检查这个情况。
+
+接下来的 `if` 语句检查英雄当前所处的斜坡。`diry != -1` 的部分忽略这次检查，这种忽略的情况是按下了空格键，英雄在向上跳。
+
+如果我们在下落（`diry == 1`），我们将设置 `y` 属性的值，使得好像我们的英雄站在了下边的瓦片上。我们设置 `jump` 属性为 `false`，`onSlope` 为当前瓦片的 `slop` 值（1 或者 -1）。
+If we were falling down (diry == 1), we will set the y property as if hero would of landed on tile below. We set jump property to false and onSlope property equal to the slope value on current tile (1 or -1).
+
+`xpos` 是我们的英雄中心离当前图块左边缘的距离：
+
+![pic](http://www.surebrz.com/origin/imgs/tonypas-tile-based-tutorials/p29_5.gif)
+
+如果沿着斜坡上升，我们将给英雄抬升 `xpos` 的值，如果是下降，我们将抬升 `tileW - xpos` 的值。记住，如果你不用正方形的瓦片，你需要自己设置正确的 `xpos` 值。
+
+`else` 里的最后一部分代码检查我们是否站在斜坡上，同时即将离开他移动到更高的瓦片的情况。
+
+接下来对 `moveChar` 方法修改向左和向右的检查部分：
+
+```
+//left
+if ((ob.downleft and ob.upleft) or ob.onSlope)
+{
+  ...
+ 
+//right
+if ((ob.upright and ob.downright) or ob.onSlope)
+{
+  ...
+```
+
+这里，只要英雄站在斜坡上，就忽略左右移动时的碰撞检测。记住，当在斜坡上的时候，他有一部分进入了墙内，所以不能使用普通的四角碰撞检测。
+
+当设置了英雄的影片剪辑后，调用 `checkForSlopes` 函数：
+
+```
+ob.clip._x = ob.x;
+ob.clip._y = ob.y;
+checkForSlopes(ob, diry, dirx);
+```
+
+当站在斜坡上跳跃时，我们必须更新英雄的 `y` 坐标，修改按键检测的方法：
+
+```
+if (Key.isDown(Key.SPACE))
+{
+  if (!ob.jump)
+  {
+    //if we were on slope, update
+    if (ob.onSlope)
+    {
+      ob.y -= ob.addy;
+      ob.ytile = Math.floor(ob.y / game.tileH);
+    }
+    ob.jump = true;
+    ob.jumpspeed = ob.jumpstart;
+  }
+}
+else if (Key.isDown(Key.RIGHT))
+{
+  keyPressed = _root.moveChar(ob, 1, 0);
+}
+else if (Key.isDown(Key.LEFT))
+{
+  keyPressed = _root.moveChar(ob, -1, 0);
+}
+```
+
+如果英雄的 `onSlope` 属性为 `true`，我们要首先把它更新，计算新的 `ytile` 值。
+
+你可以在这里下载本章节的代码：[fla](http://www.gotoandplay.it/_articles/2004/02/tonypa/slopes.fla) / [镜像](http://www.surebrz.com/origin/imgs/tonypas-tile-based-tutorials/slopes.fla)
