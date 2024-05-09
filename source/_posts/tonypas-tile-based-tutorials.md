@@ -1116,12 +1116,11 @@ function checkForSlopes (ob, diry, dirx)
 
 这个函数将会在 `moveChar` 中被调用，包含有移动的变量 `dirx` 和 `diry`。
 
-第一个 `if` 语句判断当前瓦片下方的瓦片是不是斜坡，用来处理英雄站在不能行走的瓦片上，但是向左或向右移动后掉会到斜坡瓦片上的情况。如果英雄下方是斜坡，我们增加 `ytile` 和 `y` 的值，不过当英雄处在跳跃中的时候我们不检查这个情况。
+第一个 `if` 语句判断当前瓦片下方的瓦片是不是斜坡，用来处理英雄站在不能行走的瓦片上，但是向左或向右移动后掉会到斜坡瓦片上的情况。如果英雄下方是斜坡，我们增加 `ytile` 和 `y` 的值，不过当英雄处在跳跃中的时候我们不检查这个情况（跳跃的情况会在第 2 个 if 中处理，此时英雄掉在了斜坡上）。
 
-接下来的 `if` 语句检查英雄当前所处的斜坡。`diry != -1` 的部分忽略这次检查，这种忽略的情况是按下了空格键，英雄在向上跳。
+接下来的 `if` 语句检查英雄当前处在斜坡上的情况。`diry != -1` 的部分忽略这次检查，这种忽略的情况是按下了空格键，英雄在向上跳。
 
-如果我们在下落（`diry == 1`），我们将设置 `y` 属性的值，使得好像我们的英雄站在了下边的瓦片上。我们设置 `jump` 属性为 `false`，`onSlope` 为当前瓦片的 `slop` 值（1 或者 -1）。
-If we were falling down (diry == 1), we will set the y property as if hero would of landed on tile below. We set jump property to false and onSlope property equal to the slope value on current tile (1 or -1).
+如果我们在下落（`diry == 1`），我们将设置 `y` 属性的值，使得好像我们的英雄站在了斜坡下边的瓦片的顶部（后边会抬高它到斜坡上）。我们设置 `jump` 属性为 `false`，`onSlope` 为当前瓦片的 `slop` 值（1 或者 -1）。
 
 `xpos` 是我们的英雄中心离当前图块左边缘的距离：
 
@@ -1129,7 +1128,7 @@ If we were falling down (diry == 1), we will set the y property as if hero would
 
 如果沿着斜坡上升，我们将给英雄抬升 `xpos` 的值，如果是下降，我们将抬升 `tileW - xpos` 的值。记住，如果你不用正方形的瓦片，你需要自己设置正确的 `xpos` 值。
 
-`else` 里的最后一部分代码检查我们是否站在斜坡上，同时即将离开他移动到更高的瓦片的情况。
+`else` 里的最后一部分代码检查我们正站在斜坡上同时即将离开这一格，移动到更高的瓦片的情况。
 
 接下来对 `moveChar` 方法修改向左和向右的检查部分：
 
@@ -1145,7 +1144,7 @@ if ((ob.upright and ob.downright) or ob.onSlope)
   ...
 ```
 
-这里，只要英雄站在斜坡上，就忽略左右移动时的碰撞检测。记住，当在斜坡上的时候，他有一部分进入了墙内，所以不能使用普通的四角碰撞检测。
+这里，只要英雄站在斜坡上，就忽略左右移动时的碰撞检测。记住，当在斜坡上的时候，他有一部分会进入墙内，所以不能使用普通的四角碰撞检测。
 
 当设置了英雄的影片剪辑位置后，调用 `checkForSlopes` 函数：
 
@@ -1182,6 +1181,6 @@ else if (Key.isDown(Key.LEFT))
 }
 ```
 
-如果英雄的 `onSlope` 属性为 `true`，我们要首先把它更新，计算新的 `ytile` 值。
+如果英雄的 `onSlope` 属性为 `true`，我们要首先把它更新，计算新的 `y` 和 `ytile` 值（此时 `ob.y` 的值一直是当前格的中心 `y` 坐标 `ytile * game.tileH - ob.height`，只是影片剪辑被显示在了抬高 `addy` 后的位置，所以跳跃时先将 `ob.y` 也实际抬高）。
 
 你可以在这里下载本章节的代码：[fla](http://www.gotoandplay.it/_articles/2004/02/tonypa/slopes.fla) / [镜像](http://www.surebrz.com/origin/imgs/tonypas-tile-based-tutorials/slopes.fla)
