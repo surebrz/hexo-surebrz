@@ -1071,7 +1071,7 @@ game.Tile5.prototype.frame = 5;
 
 `Tile4` 是斜上的斜坡（/），`tile5` 是斜下的斜坡（\）。在对应的 `frame` 上给这些斜坡绘制合适的帧图片。
 
-新的函数是一个好东西，他闻起来是那么的新鲜，做了你从来没有做过的事情。让我们编写 `checkForSlopes` 函数：
+新创建的函数是一个美好东西，他闻起来是那么的新鲜，做了你从来没有做过的事情。让我们编写 `checkForSlopes` 函数：
 
 ```
 function checkForSlopes (ob, diry, dirx)
@@ -1147,7 +1147,7 @@ if ((ob.upright and ob.downright) or ob.onSlope)
 
 这里，只要英雄站在斜坡上，就忽略左右移动时的碰撞检测。记住，当在斜坡上的时候，他有一部分进入了墙内，所以不能使用普通的四角碰撞检测。
 
-当设置了英雄的影片剪辑后，调用 `checkForSlopes` 函数：
+当设置了英雄的影片剪辑位置后，调用 `checkForSlopes` 函数：
 
 ```
 ob.clip._x = ob.x;
