@@ -342,7 +342,7 @@ game[name] = new game["Tile"+map[i][j]]
 
 左边的 `game[name]` 将会表示放在 `game` 对象中的新瓦片对象，`map[i][j] ` 的值是根据 `i` 和 `j` 取到的地图数组的值（0、1），我们使用关键字 `new` 来根据之前定义的原型（Tile0、Tile1）创建瓦片对象。现在我们拥有当前瓦片对应的的瓦片对象了。
 
-在下一行中，我们将新的影片剪辑附加到舞台中，使用 `game.clip[name]` 来访问它。影片剪辑将通过 `i`、`j` 与 瓦片图片宽高相乘后被放在正确的 x/y 坐标中，由于我们的瓦片对象继承了原型中的“frame”属性，我们可以使用它来通过 `gotoAndStop` 命令显示正确的帧图片。
+在下一行中，我们将新的影片剪辑加载到舞台中，使用 `game.clip[name]` 来访问它。影片剪辑将通过 `i`、`j` 与 瓦片图片宽高相乘后被放在正确的 x/y 坐标中，由于我们的瓦片对象继承了原型中的“frame”属性，我们可以使用它来通过 `gotoAndStop` 命令显示正确的帧图片。
 
 当想要通过地图数组创建瓦片时，我们可以这样调用 `buildMap` 方法：
 
@@ -394,7 +394,7 @@ char.clip._x = char.x;
 char.clip._y = char.y;
 ```
 
-代码的第一行从库中附加了一个新的影片剪辑到 `game.clip` 里（你还记得我们在上一章节中把 _root.tiles 保存在了 `game.clip` 里），然后将实例命名为 `char`。
+代码的第一行从库中加载了一个新的影片剪辑到 `game.clip` 里（你还记得我们在上一章节中把 _root.tiles 保存在了 `game.clip` 里），然后将实例命名为 `char`。
 
 然后我们把 `char` 影片剪辑（game.clip.char）保存到 `char` 对象（char.clip）里，这样每次我们想要取得该影片剪辑的时候，可以简单的用 `char.clip` 代替完整的形式： `_root.tiles.char`。这样也避免了当我们想把 `char` 视频剪辑放到别的地方的时候，修改所有的代码。
 
@@ -983,7 +983,305 @@ function fall (ob)
 
 # 拟态墙壁
 
-# 楼梯
+## 云
+
+到目前为止，我们已经让英雄和墙壁有了碰撞，这很有趣，不过坚固的墙并不是我们可以创建的唯一一种墙。许多游戏中都有着一种“云”一样的墙，允许英雄从左右穿过它或跳到上边，但是当下落时，英雄会站在上面，看一下例子：
+
+<iframe id="iframe_p11" width="240"
+  height="180" src="http://www.surebrz.com/origin/html/p11.html"></iframe>
+
+[swf](http://www.gotoandplay.it/_articles/2004/02/tonypa/img/p11_1.swf) / [镜像](http://www.surebrz.com/origin/imgs/tonypas-tile-based-tutorials/p11_1.swf)
+
+注意到区别了吗？让我们看一下图片，这是一个普通的固体墙壁瓦片，英雄从任何方向都不能进入。
+
+![pic](http://www.surebrz.com/origin/imgs/tonypas-tile-based-tutorials/p11_2.gif)
+
+而这是一朵云，英雄可以从除了从上往下以外的任何方向进入这个瓦片。如果英雄蠢蠢地从上方进入，我们就把他放回到云顶：
+
+![pic](http://www.surebrz.com/origin/imgs/tonypas-tile-based-tutorials/p11_3.gif)
+
+我们首先设定一些拥有 `cloud` 属性的云，如果哪个瓦片的 `cloud` 为 `true`，它很显然是云类型的瓦片。定义如下属性：
+
+```
+game.Tile4 = function () {};
+game.Tile4.prototype.walkable = true;
+game.Tile4.prototype.cloud = true;
+game.Tile4.prototype.frame = 4;
+```
+
+这个瓦片的 `walkable` 属性是 `true`，所以没错，英雄可以进入它，为了让英雄掉落时能站在上面，我们编写一个新的函数：
+
+```
+function checkIfOnCloud (ob)
+{
+	var leftcloud = game["t_" + ob.downY + "_" + ob.leftX].cloud;
+	var rightcloud = game["t_" + ob.downY + "_" + ob.rightX].cloud;
+	if (leftcloud or rightcloud)
+	{
+		return(true);
+	}
+	else
+	{
+		return(false);
+	}
+}
+```
+
+我们用左下角和右下角来检查物体是否站在 `cloud` 属性为 `true` 的瓦片上。如果有这样的瓦片，我们返回 `true`，如果都不是，返回 `false`。
+
+然后我们需要在两个地方调用这个函数：`moveChar` 函数检查向下移动的地方和 `fall` 函数检查是否站在固体瓦片上或者他开始掉落的地方。
+
+定位到 `moveChar` 函数 `if (diry == 1)` 那行后边的：
+
+```
+if (ob.downleft and ob.downright)
+{
+	...
+```
+
+增加云的检查：
+
+```
+if (ob.downleft and ob.downright and !checkIfOnCloud (ob))
+{
+	...
+```
+
+同样地替换 `fall` 函数的这行：
+
+```
+if (ob.downleft and ob.downright)
+{
+	...
+```
+
+为
+
+```
+if (ob.downleft and ob.downright and !checkIfOnCloud (ob))
+{
+	...
+```
+
+也就是说，在我们检查到左右下角都是可移动的瓦片（`ob.downleft` 和 ob.downright` 已经在 `getMyCorners` 函数里计算出来了）后，我们再增加一条：这些瓦片不能是云。
+
+和云、太阳还有星星一起玩耍吧 :)
+
+你可以在这里下载本章节的代码：[fla](http://www.gotoandplay.it/_articles/2004/02/tonypa/clouds.fla) / [镜像](http://www.surebrz.com/origin/imgs/tonypas-tile-based-tutorials/clouds.fla)
+
+# 梯子
+
+## 梯子
+
+梯子是平台游戏移动规则中很常见的一部分，英雄可以使用梯子来爬上爬下（我希望你知道这个事）。我们将会让角色能够在站在梯子旁时可以按上下键来攀爬：
+
+<iframe id="iframe_p11" width="240"
+  height="180" src="http://www.surebrz.com/origin/html/p12.html"></iframe>
+
+[swf](http://www.gotoandplay.it/_articles/2004/02/tonypa/img/p12_1.swf) / [镜像](http://www.surebrz.com/origin/imgs/tonypas-tile-based-tutorials/p12_1.swf)
+
+虽然梯子看上去很简单，不过还是有很多事情是需要注意的，比如首先，梯子会有哪些类型？
+
+![pic](http://www.surebrz.com/origin/imgs/tonypas-tile-based-tutorials/p12_2.gif)
+
+如图所示，有 4 种梯子的可能情况。A 的情况中梯子在不可行走的墙壁瓦片内部，英雄在 A 中可以做什么呢？他可以上下攀爬，但是由于卡在了墙内，他不能左右移动。你可以随便问一个卡在墙里的人，他们都说不好受。
+
+在 B 中，梯子是可行走的，他的上下边也是梯子，所以英雄可以上下攀爬，也可以左右移动，不过当左右移动时，英雄会在离开梯子时开始掉落。
+
+在 C 中，下方并没有梯子，所以英雄不能向下攀爬，他只能向上攀爬或者左右移动。
+
+D 的情况在任何游戏中都不能出现。不过有的人可能会觉得这只是关卡设计得不好，梯子并没有连到什么地方，它在空中就中断了，那么英雄能爬到顶部站在梯子上吗？他能走到右侧固体瓦片上吗？
+
+这些只是简单的几个例子，实际情况中会有非常多可能的梯子类型，我希望你能够明白，在开始写代码前，严谨地定义是有多么重要。大家的游戏各不相同，有些设计在一个游戏中非常完美，但放到另一个游戏中就变得浪费时间、能源，而且影响世界和平。
+
+## 规则
+
+让我们写一下英雄在梯子中的移动规则：
+
+1. 英雄可以通过上下键在梯子中攀爬。
+2. 当英雄顶部或底部中点是梯子时，他可以向上爬。
+3. 当英雄底部中点是梯子时，他可以向下爬。
+4. 当英雄的四角都不是墙时，他可以左右移动。
+5. 英雄在梯子上时，可以跳跃。
+
+完毕。
+
+## 来个梯子
+
+我们将会使用不同的影片剪辑来显示梯子瓦片，这样我们就不必给不同背景的梯子绘制不同的图片。请确认你的梯子影片剪辑勾选了 `Export this movie`，并且链接了 `ladder`。
+<details>
+  <summary>原文</summary>
+  <pre><code> 
+     We will use separate movie clip with ladder graphics that will be attached in the tile when tile has ladder. That way we dont have to draw different graphics for every ladder on different backgrounds. Make sure your ladder movie clip has "Export this movie" checked and it is linked as "ladder".
+  </code></pre>
+</details>
+
+梯子的影片剪辑在与瓦片相同的高度绘制了梯子图片，并且放在水平中央的位置。
+
+和其他瓦片一样，我们定义一下梯子对应的新瓦片类型：
+
+```
+game.Tile4 = function () {};
+game.Tile4.prototype.walkable = false;
+game.Tile4.prototype.frame = 2;
+game.Tile4.prototype.ladder = true;
+game.Tile4.prototype.item = "ladder";
+
+game.Tile5 = function () {};
+game.Tile5.prototype.walkable = true;
+game.Tile5.prototype.frame = 1;
+game.Tile5.prototype.ladder = true;
+game.Tile5.prototype.item = "ladder";
+```
+
+这两个梯子类型显示不同的帧序号，但是都有设置为 `true` 的 `ladder` 属性（我们用它来检查英雄是否靠近梯子），同时，他们拥有值为 `"ladder"` 的 `item` 属性，我们用这个来将梯子图片加载到瓦片上。
+
+在 `buildMap` 函数中设置帧图像以后，加载梯子的影片剪辑：
+
+```
+game.clip[name].gotoAndStop(game[name].frame);
+if (game[name].item != "")
+{
+	game.clip[name].attachMovie(game[name].item, "item", 1);
+}
+```
+
+这段代码检查当前的瓦片是否有 `item` 属性值，如果有值，就加载链接名字为 `item` 值的影片剪辑，然后这个实例将会被命名为 `"item"`。你可以用这个方法加载别的物体，只要别在同一个瓦片上放太多的物体。
+
+为了不把代码写两遍，让我们把 `moveChar` 函数的结尾拆到新的 `updateChar` 函数里，`moveChar` 函数将会这样结尾：
+
+```
+updateChar (ob, dirx, diry);
+return (true);
+```
+
+而 `updateChar` 函数如下：
+
+```
+function updateChar (ob, dirx, diry)
+{
+	ob.clip._x = ob.x;
+	ob.clip._y = ob.y;
+	ob.clip.gotoAndStop(dirx + diry * 2 + 3);
+	ob.xtile = Math.floor(ob.clip._x / game.tileW);
+	ob.ytile = Math.floor(ob.clip._y / game.tileH);
+	if (game["t_" + ob.ytile + "_" + ob.xtile].door and ob == _root.char)
+	{
+		changeMap (ob);
+	}
+}
+```
+
+在 `fall` 函数开头添加这行：
+
+```
+ob.climb = false;
+```
+
+然后修改方向键检测的函数：
+
+```
+if (Key.isDown(Key.RIGHT))
+{
+	getMyCorners (ob.x - ob.speed, ob.y, ob);
+	if (!ob.climb or ob.downleft and ob.upleft and ob.upright and ob.downright)
+	{
+		keyPressed = _root.moveChar(ob, 1, 0);
+	}
+}
+else if (Key.isDown(Key.LEFT))
+{
+	getMyCorners (ob.x - ob.speed, ob.y, ob);
+	if (!ob.climb or ob.downleft and ob.upleft and ob.upright and ob.downright)
+	{
+		keyPressed = _root.moveChar(ob, -1, 0);
+	}
+}
+else if (Key.isDown(Key.UP))
+{
+	if (!ob.jump and checkUpLadder (ob))
+	{
+		keyPressed = _root.climb(ob, -1);
+	}
+}
+else if (Key.isDown(Key.DOWN))
+{
+	if (!ob.jump and checkDownLadder (ob))
+	{
+		keyPressed = _root.climb(ob, 1);
+	}
+}
+```
+
+当我们检测到左右键按下时，我们检查英雄是否没有在爬梯子 （`!ob.climb`），如果在爬梯子，我们会判断他的四角是不是将会撞墙。
+
+当检测到上下键时，我们首先判断英雄是不是没有在跳跃（`!ob.jump`），而是否在跳跃的条件使用两个新的函数来判断：`checkUpLadder` 和 `checkDownLadder`。如果都满足，我们使用新函数 `climb` 函数来让英雄移动。
+
+## 爬梯子函数
+
+为了实现爬梯子，我们需要创建 3 个新函数，1个用来判断能否向上爬，一个判断能否向下爬，最后一个用来移动英雄。
+
+```
+function checkUpLadder (ob)
+{
+	var downY = Math.floor((ob.y + ob.height - 1) / game.tileH);
+	var upY = Math.floor((ob.y - ob.height) / game.tileH);
+	var upLadder = game["t_" + upY + "_" + ob.xtile].ladder;
+	var downLadder = game["t_" + downY + "_" + ob.xtile].ladder;
+	if (upLadder or downLadder)
+	{
+		return (true);
+	}
+	else
+	{
+		fall (ob);
+	}
+}
+```
+
+这段代码计算了英雄当前的顶部中点和底部中点坐标，如果这些坐标所在的瓦片的 `ladder` 属性为 `true`，表示我们可以向上爬，如果上方或下方不是梯子，我们检测英雄是否会掉落。
+
+```
+function checkDownLadder (ob)
+{
+	var downY = Math.floor((ob.speed + ob.y + ob.height) / game.tileH);
+	var downLadder = game["t_" + downY + "_" + ob.xtile].ladder;
+	if (downLadder)
+	{
+		return (true);
+	}
+	else
+	{
+		fall (ob);
+	}
+}
+```
+
+为了检查英雄能否向下爬，我们需要英雄下方的瓦片的 `ladder` 属性，但是与向上爬不同，我们检查的是英雄移动以后站所在的瓦片（`ob.speed + ob.y + ob.height`）。
+
+```
+function climb (ob, diry)
+{
+	ob.climb = true;
+	ob.jump = false;
+	ob.y += ob.speed * diry;
+	ob.x = (ob.xtile * game.tileW) + game.tileW / 2;
+	updateChar (ob, 0, diry);
+	return (true);
+}
+```
+
+在 `climb` 函数中，我们首先设置 `climb` 标识为 `true`，`jump` 标识为 `false`。然后计算英雄的新 `y` 坐标，之后将横坐标 `y` 放在梯子中心：
+
+```
+ob.x = (ob.xtile * game.tileW) + game.tileW / 2;
+```
+
+只要英雄的中心在梯子瓦片上，他都可以攀爬，而在梯子左右两边攀爬会看起来比较奇怪。
+
+最后我们通过 `updateChar` 函数更新角色的实际位置。
+
+你可以在这里下载本章节的代码：[fla](http://www.gotoandplay.it/_articles/2004/02/tonypa/clouds.fla) / [镜像](http://www.surebrz.com/origin/imgs/tonypas-tile-based-tutorials/clouds.fla)
 
 # 笨笨的敌人
 

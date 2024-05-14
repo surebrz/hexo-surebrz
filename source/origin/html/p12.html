@@ -1,0 +1,560 @@
+<!doctype html>
+<html>
+<head>
+<script src="https://pixijs.download/release/pixi.js"></script>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+    html,body {
+        width: 100%;
+        height: 100%;
+        overflow:hidden;
+    }
+</style>
+</head>
+<body>
+<div id="p5_div" style="width:240px;height:180px;">
+</div>
+</body>
+  
+<script type="module">
+    // 键盘事件处理
+    let keyStates = {};
+    function keyboard(keyCode) {
+        let key = {};
+        key.code = keyCode;
+        key.isDown = false;
+        key.isUp = true;
+        key.press = undefined;
+        key.release = undefined;
+        //The `downHandler`
+        key.downHandler = event => {
+            if (event.keyCode === key.code) {
+            if (key.isUp && key.press) key.press();
+            key.isDown = true;
+            key.isUp = false;
+            }
+            event.preventDefault();
+        };
+        //The `upHandler`
+        key.upHandler = event => {
+            if (event.keyCode === key.code) {
+            if (key.isDown && key.release) key.release();
+            key.isDown = false;
+            key.isUp = true;
+            }
+            event.preventDefault();
+        };
+        //Attach event listeners
+        window.addEventListener(
+            "keydown", key.downHandler.bind(key), false
+        );
+        window.addEventListener(
+            "keyup", key.upHandler.bind(key), false
+        );
+        return key;
+    }
+    //Capture the keyboard arrow keys
+    let left = keyboard(37),
+      up = keyboard(38),
+      right = keyboard(39),
+      down = keyboard(40),
+      space = keyboard(32);
+
+      
+	var keyPressed = false;
+    //Left arrow key `press` method
+    left.press = () => {
+        keyStates[37] = true;
+    };
+    //Left arrow key `release` method
+    left.release = () => {
+        keyStates[37] = false;
+    };
+    //Up
+    up.press = () => {
+        keyStates[38] = true;
+    };
+    up.release = () => {
+        keyStates[38] = false;
+    };
+    //Right
+    right.press = () => {
+        keyStates[39] = true;
+    };
+    right.release = () => {
+        keyStates[39] = false;
+    };
+    //Down
+    down.press = () => {
+        keyStates[40] = true;
+    };
+    down.release = () => {
+        keyStates[40] = false;
+    };
+    //Space
+    space.press = () => {
+        keyStates[32] = true;
+    };
+    space.release = () => {
+        keyStates[32] = false;
+    };
+
+
+    const app = new PIXI.Application();
+    await app.init({ width: 240, height: 180 })
+    document.getElementById("p5_div").appendChild(app.canvas);
+    let graphics = new PIXI.Graphics()
+    .rect(0, 0, 240, 180)
+    .fill(0x000000);
+    app.stage.addChild(graphics);
+    // sprite sheets
+    const charSheetData = {
+        "frames": {
+            "d_0.png": {
+                "frame": {"x":42, "y":42, "w":20, "h":20},
+                "spriteSourceSize": {"x":0,"y":0,"w":20,"h":20},
+                "sourceSize": {"w":20,"h":20}
+            },
+            "d_1.png": {
+                "frame": {"x":42, "y":21, "w":20, "h":20},
+                "spriteSourceSize": {"x":0,"y":0,"w":20,"h":20},
+                "sourceSize": {"w":20,"h":20}
+            },
+            "d_2.png": {
+                "frame": {"x":42, "y":0, "w":20, "h":20},
+                "spriteSourceSize": {"x":0,"y":0,"w":20,"h":20},
+                "sourceSize": {"w":20,"h":20}
+            },
+            "l_0.png": {
+                "frame": {"x":21, "y":63, "w":20, "h":20},
+                "spriteSourceSize": {"x":0,"y":0,"w":20,"h":20},
+                "sourceSize": {"w":20,"h":20}
+            },
+            "l_1.png": {
+                "frame": {"x":21, "y":42, "w":20, "h":20},
+                "spriteSourceSize": {"x":0,"y":0,"w":20,"h":20},
+                "sourceSize": {"w":20,"h":20}
+            },
+            "l_2.png": {
+                "frame": {"x":42, "y":63, "w":20, "h":20},
+                "spriteSourceSize": {"x":0,"y":0,"w":20,"h":20},
+                "sourceSize": {"w":20,"h":20}
+            },
+            "r_0.png": {
+                "frame": {"x":21, "y":0, "w":20, "h":20},
+                "spriteSourceSize": {"x":0,"y":0,"w":20,"h":20},
+                "sourceSize": {"w":20,"h":20}
+            },
+            "r_1.png": {
+                "frame": {"x":0, "y":63, "w":20, "h":20},
+                "spriteSourceSize": {"x":0,"y":0,"w":20,"h":20},
+                "sourceSize": {"w":20,"h":20}
+            },
+            "r_2.png": {
+                "frame": {"x":0, "y":42, "w":20, "h":20},
+                "spriteSourceSize": {"x":0,"y":0,"w":20,"h":20},
+                "sourceSize": {"w":20,"h":20}
+            },
+            "u_0.png": {
+                "frame": {"x":0, "y":21, "w":20, "h":20},
+                "spriteSourceSize": {"x":0,"y":0,"w":20,"h":20},
+                "sourceSize": {"w":20,"h":20}
+            },
+            "u_1.png": {
+                "frame": {"x":0, "y":0, "w":20, "h":20},
+                "spriteSourceSize": {"x":0,"y":0,"w":20,"h":20},
+                "sourceSize": {"w":20,"h":20}
+            },
+            "u_2.png": {
+                "frame": {"x":21, "y":21, "w":20, "h":20},
+                "spriteSourceSize": {"x":0,"y":0,"w":20,"h":20},
+                "sourceSize": {"w":20,"h":20}
+            }
+
+        },
+        "meta": {
+            "image": "images/p8_sprites.png",
+            "size": {"w": 63, "h": 84},
+            "scale": "1"
+        },
+        animations: {
+            up: ["u_0.png", "u_1.png", "u_2.png"],
+            left: ["l_0.png", "l_1.png", "l_2.png"],
+            right: ["r_0.png", "r_1.png", "r_2.png"],
+            down: ["d_0.png", "d_1.png", "d_2.png"],
+        }
+    };
+    console.log(charSheetData.meta.image);
+    const charTexture = await PIXI.Assets.load(charSheetData.meta.image);
+    const charSheet = new PIXI.Spritesheet(
+        charTexture,
+        charSheetData
+    );
+    await charSheet.parse();
+    const charSprite = {
+        sprites: {
+            1: new PIXI.AnimatedSprite(charSheet.animations.up),
+            2: new PIXI.AnimatedSprite(charSheet.animations.left),
+            4: new PIXI.AnimatedSprite(charSheet.animations.right),
+            5: new PIXI.AnimatedSprite(charSheet.animations.down)
+        }
+    }
+    Object.values(charSprite.sprites).forEach(sprite => {
+        app.stage.addChild(sprite);
+        sprite.animationSpeed = 0.166;
+        sprite.visible = false;
+        sprite.anchor.set(0.5);
+    });
+    charSprite.sprites[4].visible = true;
+    charSprite.sprites[4].play();
+    charSprite.getX = function() {
+        return charSprite.sprites[1].x;
+    };
+    charSprite.getY = function() {
+        return charSprite.sprites[1].y;
+    };
+    charSprite.setX = function(x) {
+        Object.values(charSprite.sprites).forEach(sprite => {
+            sprite.x = x;
+        });
+    };
+    charSprite.setY = function(y) {
+        Object.values(charSprite.sprites).forEach(sprite => {
+            sprite.y = y;
+        });
+    };
+    charSprite.playAnim = function(index) {
+        Object.keys(charSprite.sprites).forEach(key => {
+            if (key != index) {
+                charSprite.sprites[key].visible = false;
+            }
+        });
+        charSprite.sprites[index].visible = true;
+        charSprite.sprites[index].play();
+    }
+    charSprite.stopAnim = function() {
+        Object.values(charSprite.sprites).forEach(sprite => {
+            sprite.stop();
+        });
+    }
+
+    // 
+    
+    window.myMap1 = [
+        [1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 1, 5, 0, 0, 0, 1],
+        [1, 0, 0, 4, 0, 1, 0, 1],
+        [1, 0, 0, 4, 0, 0, 0, 2],
+        [1, 1, 1, 1, 1, 1, 1, 1]
+    ];
+    
+    window.myMap2 = [
+        [1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 0, 0, 0, 1, 0, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 1],
+        [1, 0, 0, 0, 0, 0, 0, 1],
+        [3, 0, 1, 0, 0, 0, 0, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1]
+    ];
+    
+    let game={tileW:30, tileH:30, currentMap: 1};
+    let char={xtile:2, ytile:1, speed:4, gravity: 2, jumpstart: -18, jumpspeed: 0, jump: false};
+
+    // tiles
+    game.clip = {};
+
+    game.clip.char = charSprite;
+    char.clip = game.clip.char;
+    
+    //walkable tile
+    game.Tile0 = function () {};
+    game.Tile0.prototype.walkable = true;
+    game.Tile0.prototype.frame = 1;
+    
+    //wall tile
+    game.Tile1 = function () {};
+    game.Tile1.prototype.walkable = false;
+    game.Tile1.prototype.frame = 2;
+
+    //door tile
+    game.Doors = function(newmap, newcharx, newchary) {
+        this.newmap = newmap;
+        this.newcharx = newcharx;
+        this.newchary = newchary;
+    };
+    game.Doors.prototype.walkable = true;
+    game.Doors.prototype.frame = 3;
+    game.Doors.prototype.door = true;
+
+    // door 2
+    game.Tile2 = function () {};
+    game.Tile2.prototype = new game.Doors(2, 1, 4);
+    
+    game.Tile3 = function () {};
+    game.Tile3.prototype = new game.Doors(1, 6, 4);
+
+    // ladder
+    game.Tile4 = function () {};
+    game.Tile4.prototype.walkable = true;
+    game.Tile4.prototype.frame = 4;
+    game.Tile4.prototype.ladder = true;
+    
+    game.Tile5 = function () {};
+    game.Tile5.prototype.walkable = false;
+    game.Tile5.prototype.frame = 5;
+    game.Tile5.prototype.ladder = true;
+
+    buildMap(window["myMap" + game.currentMap]);
+    
+    var ob = char;
+    let ticker = PIXI.Ticker.shared;
+    const TimeLimit = 60 / 24;
+    let timeCount = 0;
+    ticker.add(function (time) {
+        timeCount += time.deltaTime;
+        // console.log(timeCount);
+        if (timeCount > TimeLimit) {
+            timeCount = 0;
+        } else {
+            return;
+        }
+        keyPressed = false;
+        if (keyStates[37]) {
+            getMyCorner(ob.x - ob.speed, ob.y, ob);
+            if (!ob.climb || (ob.downleft && ob.downright && ob.upleft && ob.upright)) {
+                keyPressed = moveChar(ob, -1, 0, 0);
+            }
+        }
+        if (keyStates[38]) {
+            if (!ob.jump && checkUpLadder(ob)) {
+                keyPressed = moveChar(ob, 0, -1);
+            }
+        }
+        if (keyStates[39]) {
+            getMyCorner(ob.x + ob.speed, ob.y, ob);
+            if (!ob.climb || (ob.downleft && ob.downright && ob.upleft && ob.upright)) {
+                keyPressed = moveChar(ob, 1, 0, 0);
+            }
+        }
+        if (keyStates[40]) {
+            if (!ob.jump && checkDownLadder(ob)) {
+                keyPressed = moveChar(ob, 0, 1);
+            }
+        }
+        if (keyStates[32] && !ob.jump) {
+            ob.jump = true;
+            ob.jumpspeed = ob.jumpstart;
+        }
+        if (ob.jump) {
+            keyPressed = jump(ob);
+        }
+        if (!keyPressed) {
+            ob.clip.stopAnim();
+        }
+    });
+
+    function changeMap(ob) {
+        let door = game["t_" + ob.ytile + "_" + ob.xtile];
+        game.currentMap = door.newmap;
+        ob.xtile = door.newcharx;
+        ob.ytile = door.newchary;
+        buildMap(window["myMap" + game.currentMap]);
+    }
+
+    function getMyCorner(x, y, ob) {
+
+        ob.downY = Math.floor((y + ob.height - 1) / game.tileH);
+        ob.upY = Math.floor((y - ob.height) / game.tileH);
+        ob.leftX = Math.floor((x - ob.width) / game.tileW);
+        ob.rightX = Math.floor((x + ob.width - 1) / game.tileW);
+
+        ob.upleft = game["t_" + ob.upY + "_" + ob.leftX].walkable;
+        ob.upright = game["t_" + ob.upY + "_" + ob.rightX].walkable;
+        ob.downleft = game["t_" + ob.downY + "_" + ob.leftX].walkable;
+        ob.downright = game["t_" + ob.downY + "_" + ob.rightX].walkable;
+
+    }
+
+    function checkUpLadder(ob) {
+        let downY = Math.floor((ob.y + ob.height - 1) / game.tileH);
+        let upY = Math.floor((ob.y - ob.height) / game.tileH);
+        let uptile = game["t_" + upY + "_" + ob.xtile].ladder;
+        let downtile = game["t_" + downY + "_" + ob.xtile].ladder;
+
+        if (uptile || downtile) {
+            return true;
+        }
+        return fall(ob);
+    }
+
+    function checkDownLadder(ob) {
+        let downY = Math.floor((ob.y + ob.speed + ob.height) / game.tileH);
+        let downtile = game["t_" + downY + "_" + ob.xtile].ladder;
+
+        if (downtile) {
+            return true;
+        }
+        return fall(ob);
+    }
+
+    function climb(ob) {
+        ob.climb = true;
+        ob.jump = false;
+        ob.x = ob.xtile * game.tileW + game.tileW / 2;
+        updateCharPos(ob);
+        return true;
+    }
+
+    function jump(ob) {
+        ob.jumpspeed += ob.gravity;
+        if (ob.jumpspeed > game.tileH) {
+            ob.jumpspeed = game.tileH;
+        }
+        if (ob.jumpspeed < 0) {
+            moveChar(ob, 0, -1, -1);
+        }
+        if (ob.jumpspeed > 0) {
+            moveChar(ob, 0, 1, 1);
+        }
+        return true;
+    }
+
+    function fall(ob) {
+        ob.climb = false;
+        if (!ob.jump) {
+            getMyCorner(ob.x, ob.y + 1, ob);
+            if (ob.downleft && ob.downright) {
+                ob.jump = true;
+                ob.jumpspeed = 0;
+            }
+        }
+    }
+
+    function updateCharPos(ob, dirx, diry) {
+        ob.clip.setX(ob.x);
+        ob.clip.setY(ob.y);
+        ob.clip.playAnim(dirx + diry * 2 + 3);
+        ob.xtile = Math.floor(ob.clip.getX() / game.tileW);
+        ob.ytile = Math.floor(ob.clip.getY() / game.tileH);
+        // send map check
+        if (game["t_" + ob.ytile + "_" + ob.xtile].door && ob == char) {
+            changeMap(ob);
+        }
+    }
+
+    function moveChar(ob, dirx, diry, jump) {
+        let speed = ob.speed;
+        if (Math.abs(jump) == 1) {
+            speed = ob.jumpspeed * jump;
+        }
+        // 竖直方向上检查
+        getMyCorner(ob.x, ob.y + diry * speed, ob);
+        if (diry == 1) {
+            // 向下，检查左下和右下
+            if (ob.downleft && ob.downright) {
+                // 可行走
+                ob.y += diry * speed;
+            } else {
+                // 不可行走，设置为贴边
+                ob.y = (ob.ytile + 1) * game.tileH - ob.height;
+                // 开始落地
+                if (ob.jump) {
+                    ob.jumpspeed = 0;
+                    ob.jump = false;
+                }
+            }
+        }
+        if (diry == -1) {
+            // 向上，检查左上和右上
+            if (ob.upleft && ob.upright) {
+                ob.y += diry * speed;
+            } else {
+                ob.y = ob.ytile * game.tileH + ob.height;
+                // 开始下落
+                if (ob.jump) {
+                    ob.jumpspeed = 0;
+                }
+            }
+        }
+        // 水平方向上检查
+        getMyCorner(ob.x + dirx * speed, ob.y, ob);
+        if (dirx == 1) {
+            // 向右，检查右下和右上
+            if (ob.upright && ob.downright) {
+                ob.x += dirx * speed;
+                fall(ob);
+            } else {
+                ob.x = (ob.xtile + 1) * game.tileW - ob.width;
+            }
+        }
+        if (dirx == -1) {
+            if (ob.downleft && ob.upleft) {
+                // 可行走
+                ob.x += dirx * speed;
+                fall(ob);
+            } else {
+                // 不可行走，设置为贴边
+                ob.x = ob.xtile * game.tileW + ob.width;
+            }
+        }
+        updateCharPos(ob, dirx, diry);
+        return true;
+    }
+
+    // 模拟 flash
+    function gotoAndStop(clip, frame) {
+        let colors = {
+            1: 0xffffff,
+            2: 0x000000,
+            3: 0x555555,
+            4: 0xffffff,
+            5: 0x000000,
+        }
+        let color = colors[frame];
+        if (color) {
+            graphics.rect(clip._x, clip._y, game.tileW, game.tileH)
+                    .fill(color);
+        }
+
+        if (frame == 4) {
+            color = 0x00ff00;
+            graphics.rect(clip._x + game.tileW / 2 - 2, clip._y, 4, game.tileH)
+                    .fill(color);
+        }
+        if (frame == 5) {
+            color = 0x00ff00;
+            graphics.rect(clip._x + game.tileW / 2 - 2, clip._y, 4, game.tileH)
+                    .fill(color);
+        }
+    }
+    function buildMap (map) {
+        game.clip = {};
+        var mapWidth = map[0].length;
+        var mapHeight = map.length;
+        for (var i = 0; i < mapHeight; ++i)
+        {
+            for (var j = 0; j < mapWidth; ++j)
+            {
+                var name = "t_" + i + "_" + j;
+                game[name] = new game["Tile" + map[i][j]];
+                game.clip[name] = {};
+                game.clip[name]._x = (j * game.tileW);
+                game.clip[name]._y = (i * game.tileH);
+                gotoAndStop(game.clip[name], game[name].frame);
+            }
+        }
+        
+        char.x = (char.xtile * game.tileW) + game.tileW / 2;
+        char.y = (char.ytile * game.tileH) + game.tileH / 2;
+        char.width = 20 / 2;
+        char.height = 20 / 2;
+        char.y = (char.ytile + 1) * game.tileH - char.height;
+        charSprite.setX(char.x);
+        charSprite.setY(char.y);
+    }
+</script>
+</html>
