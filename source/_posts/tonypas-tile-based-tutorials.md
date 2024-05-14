@@ -1183,7 +1183,7 @@ ob.climb = false;
 ```
 if (Key.isDown(Key.RIGHT))
 {
-	getMyCorners (ob.x - ob.speed, ob.y, ob);
+	getMyCorners (ob.x + ob.speed, ob.y, ob);
 	if (!ob.climb or ob.downleft and ob.upleft and ob.upright and ob.downright)
 	{
 		keyPressed = _root.moveChar(ob, 1, 0);

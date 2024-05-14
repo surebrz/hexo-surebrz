@@ -331,7 +331,7 @@
         }
         if (keyStates[38]) {
             if (!ob.jump && checkUpLadder(ob)) {
-                keyPressed = moveChar(ob, 0, -1);
+                keyPressed = climb(ob, 0, -1);
             }
         }
         if (keyStates[39]) {
@@ -342,7 +342,7 @@
         }
         if (keyStates[40]) {
             if (!ob.jump && checkDownLadder(ob)) {
-                keyPressed = moveChar(ob, 0, 1);
+                keyPressed = climb(ob, 0, 1);
             }
         }
         if (keyStates[32] && !ob.jump) {
@@ -401,11 +401,12 @@
         return fall(ob);
     }
 
-    function climb(ob) {
+    function climb(ob, dirx, diry) {
         ob.climb = true;
         ob.jump = false;
         ob.x = ob.xtile * game.tileW + game.tileW / 2;
-        updateCharPos(ob);
+        ob.y += ob.speed * diry;
+        updateCharPos(ob, dirx, diry);
         return true;
     }
 
@@ -515,7 +516,7 @@
             5: 0x000000,
         }
         let color = colors[frame];
-        if (color) {
+        if (color != null) {
             graphics.rect(clip._x, clip._y, game.tileW, game.tileH)
                     .fill(color);
         }
