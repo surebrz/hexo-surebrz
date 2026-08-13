@@ -10,7 +10,7 @@ categories: Cocos2d-X
 
 引擎：Cocos Creator 3.6.0
 
-在线演示：[移动端](http://www.surebrz.com/origin/piachan-mobile/)
+在线演示：[移动端](http://www.soulbrz.com/origin/piachan-mobile/)
 
 截图：
 

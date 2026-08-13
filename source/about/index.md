@@ -18,7 +18,7 @@ date: 2015-09-16 23:40:14
 
 ## 其他根据地
 
-- [微博](http://weibo.com/surebrz)  _哈哈党_
+- [微博](http://weibo.com/soulbrz)  _哈哈党_
 
 - [GitHub](https://github.com/surevision)
 

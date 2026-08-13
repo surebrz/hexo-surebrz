@@ -6,7 +6,7 @@
 favicon: /favicon.ico
 
 # Set default keywords (Use a comma to separate)
-keywords: "surebrz,blog"
+keywords: "soulbrz,blog"
 
 # Set rss to false to disable feed link.
 # Leave rss as empty to use site's feed link.
@@ -324,12 +324,12 @@ han: false
 #baidu_analytics:
 
 # Duoshuo ShortName
-#duoshuo_shortname: surebrz
+#duoshuo_shortname: soulbrz
 
 # Disqus
 disqus:
   enable: true
-  shortname: surebrz
+  shortname: soulbrz
   count: true
 
 # Hypercomments

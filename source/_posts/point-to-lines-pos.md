@@ -238,7 +238,7 @@ categories: JavaScript
 
 ## 求垂足
 
-![pic](http://www.surebrz.com/origin/imgs/p-t-l-1.png)
+![pic](http://www.soulbrz.com/origin/imgs/p-t-l-1.png)
 
 如图，已知点 P 和线段 p1p2 可知，垂足 T 的坐标即为向量 **P1P** 在向量 **P1P2** 上**投影**的点的坐标。
 

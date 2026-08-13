@@ -51,7 +51,7 @@ $ npm install hexo@3.1.1 -g
 clone项目:
 
 ``` bash
-$ git clone https://github.com/surebrz/hexo-surebrz.git
+$ git clone https://github.com/soulbrz/hexo-soulbrz.git
 ```
 
 初始化环境

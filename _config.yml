@@ -6,14 +6,14 @@
 title: 麦甜甜圈
 subtitle: 
 description:
-author: 烁灵SureBrz
+author: 烁灵SoulBrz
 language: zh-Hans
 timezone:
 since: 2013
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://www.surebrz.com
+url: http://www.soulbrz.com
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
@@ -78,7 +78,7 @@ links:
 ## Docs: http://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: git@github.com:surebrz/surebrz.github.io.git
+  repo: git@github.com:soulbrz/soulbrz.github.io.git
   branch: master
   message: commit new article
 

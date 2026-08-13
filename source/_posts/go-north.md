@@ -15,7 +15,7 @@ Go North! 古诺打砖块小游戏~
 
 去年也好咸。
 
-点击[这里（手机）](http://www.surebrz.com/origin/go-north)/[这里（PC）](http://www.surebrz.com/origin/go-north/pc)进入
+点击[这里（手机）](http://www.soulbrz.com/origin/go-north)/[这里（PC）](http://www.soulbrz.com/origin/go-north/pc)进入
 
 ## 截图
 
