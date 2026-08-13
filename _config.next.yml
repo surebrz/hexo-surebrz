@@ -1,0 +1,115 @@
+# ===============================================================
+# NexT 8 Alternate Theme Config (migrated from NexT 5.1.2)
+# ===============================================================
+
+# Scheme
+scheme: Mist
+
+# Site Information
+keywords: "soulbrz,blog"
+favicon:
+  small: /favicon.ico
+  medium: /favicon.ico
+  apple_touch_icon: /favicon.ico
+  safari_pinned_tab: /favicon.ico
+
+# Menu
+menu:
+  home: / || fa fa-home
+  categories: /categories/ || fa fa-th
+  about: /about || fa fa-user
+  lab: /lab || fa fa-th
+  fantasy-links: /fantasy-links || fa fa-th
+
+menu_settings:
+  icons: true
+  badges: false
+
+# Sidebar
+sidebar:
+  position: right
+  display: always
+  offset: 12
+
+# Sidebar Avatar
+avatar:
+  url: /images/default_avatar.jpg
+  rounded: false
+  rotated: false
+
+site_state: true
+
+# Blog rolls (友链)
+links_settings:
+  icon: fa fa-globe
+  layout: block
+links:
+  橡皮擦擦: http://blog.yoyoyo.me
+  ShiinaYASHIRO Games: https://ciella1.wixsite.com/shiinayashiro
+
+# Table of Contents
+toc:
+  enable: true
+  number: true
+  wrap: false
+  expand_all: false
+  max_depth: 6
+
+# Footer
+footer:
+  since: 2013
+  icon:
+    name: fa fa-heart
+    animated: false
+    color: "#ff0000"
+  copyright: 烁灵SoulBrz
+  powered: true
+
+# Post meta
+post_meta:
+  item_text: true
+  created_at: true
+  updated_at:
+    enable: false
+    another_day: true
+  categories: true
+
+# Motion
+motion:
+  enable: true
+  async: false
+  duration: 200
+
+# Fancybox image zoom
+fancybox: true
+
+# Comments - Disqus
+comments:
+  style: tabs
+  active: disqus
+  storage: true
+  lazyload: false
+
+disqus:
+  enable: true
+  shortname: soulbrz
+  count: true
+
+# Busuanzi statistics
+busuanzi_count:
+  enable: true
+  total_visitors: true
+  total_visitors_icon: fa fa-user
+  total_views: true
+  total_views_icon: fa fa-eye
+  post_views: true
+  post_views_icon: far fa-eye
+
+# Font (enable Lato like before)
+font:
+  enable: true
+  host:
+  global:
+    external: true
+    family: Lato
+    size:

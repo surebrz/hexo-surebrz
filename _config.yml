@@ -4,12 +4,12 @@
 
 # Site
 title: 麦甜甜圈
-subtitle: 
+subtitle:
 description:
+keywords: "soulbrz,blog"
 author: 烁灵SoulBrz
-language: zh-Hans
+language: zh-CN
 timezone:
-since: 2013
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
@@ -17,6 +17,9 @@ url: http://www.soulbrz.com
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
+pretty_urls:
+  trailing_index: true
+  trailing_html: true
 
 # Directory
 source_dir: source
@@ -32,17 +35,28 @@ skip_render: origin/**
 new_post_name: :title.md # File name of new posts
 default_layout: post
 titlecase: false # Transform title into titlecase
-external_link: true # Open external links in new tab
+external_link:
+  enable: true # Open external links in new tab
+  field: site # Apply to the whole site
+  exclude: ''
 filename_case: 0
 render_drafts: false
 post_asset_folder: false
 relative_link: false
 future: true
+syntax_highlighter: highlight.js
 highlight:
-  enable: true
-  line_number: true
   auto_detect: true
-  tab_replace:
+  line_number: true
+  tab_replace: ''
+  wrap: true
+  hljs: false
+  first_line_number: always1
+  strip_indent: true
+prismjs:
+  preprocess: true
+  line_number: true
+  tab_replace: ''
 
 # Category & Tag
 default_category: uncategorized
@@ -62,17 +76,9 @@ per_page: 10
 pagination_dir: page
 
 # Extensions
-## Plugins: http://hexo.io/plugins/
-## Themes: http://hexo.io/themes/
-theme: next 
-
-# 友链
-# title, chinese available
-links_title: 邻家的小屋
-# links
-links:
-  橡皮擦擦: http://blog.yoyoyo.me
-  ShiinaYASHIRO Games: https://ciella1.wixsite.com/shiinayashiro
+## Plugins: https://hexo.io/plugins/
+## Themes: https://hexo.io/themes/
+theme: next
 
 # Deployment
 ## Docs: http://hexo.io/docs/deployment.html
