@@ -4,9 +4,9 @@ tags: [教程,翻译,游戏开发]
 categories: 教程
 ---
 
-教程地址：http://www.gotoandplay.it/_articles/2004/02/tonypa.php
+教程地址：https://www.gotoandplay.it/_articles/2004/02/tonypa.php
 
-教程原作者地址（已失效）：http://www.tonypa.pri.ee/
+教程原作者地址（已失效）：https://www.tonypa.pri.ee/
 
 看到一篇非常棒的 2D 瓦片地图游戏开发教程，对瓦片地图游戏进行了手把手级别深入浅出的系统教学。鉴于原文已经是 2004 年的教程，且作者原始博客已经无法访问，为了避免教程遗失，在这里对该教程进行翻译留档。
 
@@ -28,7 +28,7 @@ categories: 教程
 
 比如，如果你想要给游戏加入漂亮的背景图，但图片太大使得游戏运行很慢时，要怎么办呢？把图片切割成瓦片！
 
-![pic](http://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p02_1.gif)
+![pic](https://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p02_1.gif)
 
 在上图中，你可以看到图片中的一些部分是完全一样的，1 和 4 相同，2 和 3 相同，5 到 9 的部分是完全一样的。将图片切割便得到了瓦片。整图比瓦片的文件大小要大得多，而你只需要 4 个不同的瓦片就可以绘制该图片。
 
@@ -214,9 +214,9 @@ trees = [[23,6], [37,21], [55,345]]
 正如你在章节 **地图格式** 里看到的，我们将使用二维数组保存地图。现在我们将把瓦片显示在屏幕上，将他们设置在正确的位置，显示正确的帧图片。这个 Flash 将会像这样：
 
 <iframe id="iframe_p5" width="240"
-  height="180" src="http://www.soulbrz.com/origin/html/p5.html"></iframe>
+  height="180" src="https://www.soulbrz.com/origin/html/p5.html"></iframe>
 
-[swf](http://www.gotoandplay.it/_articles/2004/02/tonypa/img/p05_1.swf) / [镜像](http://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p05_1.swf)
+[swf](https://www.gotoandplay.it/_articles/2004/02/tonypa/img/p05_1.swf) / [镜像](https://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p05_1.swf)
 
 首先定义对象和变量：
 
@@ -350,7 +350,7 @@ game[name] = new game["Tile"+map[i][j]]
 buildMap(myMap);
 ```
 
-你可以在这里下载本章节的代码：[fla](http://www.gotoandplay.it/_articles/2004/02/tonypa/creatingTiles.fla) / [镜像](http://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/creatingTiles.fla)
+你可以在这里下载本章节的代码：[fla](https://www.gotoandplay.it/_articles/2004/02/tonypa/creatingTiles.fla) / [镜像](https://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/creatingTiles.fla)
 
 # 英雄
 
@@ -359,15 +359,15 @@ buildMap(myMap);
 没有不存在英雄的游戏。我们的英雄会拯救世界，救出公主，打败坏人。我们也会在游戏里加入英雄，他暂时还不能拯救世界，他什么有用的事都还不会做，但他就在这里：
 
 <iframe id="iframe_p6" width="240"
-  height="180" src="http://www.soulbrz.com/origin/html/p6.html"></iframe>
+  height="180" src="https://www.soulbrz.com/origin/html/p6.html"></iframe>
   
-[swf](http://www.gotoandplay.it/_articles/2004/02/tonypa/img/p06_1.swf) / [镜像](http://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p06_1.swf)
+[swf](https://www.gotoandplay.it/_articles/2004/02/tonypa/img/p06_1.swf) / [镜像](https://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p06_1.swf)
 
 英雄是一个红色方块 :) 啥，他看起来不强？那你可以自己画出来你的英雄。他的影片剪辑在库里叫做 “char”，不要让英雄的影片剪辑比瓦片的尺寸更大。
 
 另外记住，英雄的影片剪辑（红色方框）锚点在中间，而瓦片的在左上角：
 
-![pic](http://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p06_2.gif)
+![pic](https://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p06_2.gif)
 
 想要一些代码吗？在 `tiles` 的定义后边加入这行：
 
@@ -406,7 +406,7 @@ char.clip._y = char.y;
 
 最后两行把视频剪辑 `char.clip` 放在计算出的 `x`、`y` 坐标上。
 
-你可以在这里下载本章节的代码：[fla](http://www.gotoandplay.it/_articles/2004/02/tonypa/theHero.fla) / [镜像](http://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/theHero.fla)
+你可以在这里下载本章节的代码：[fla](https://www.gotoandplay.it/_articles/2004/02/tonypa/theHero.fla) / [镜像](https://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/theHero.fla)
 
 # 按键移动
 
@@ -415,26 +415,26 @@ char.clip._y = char.y;
 这个章节中我们将使用 4 个方向键移动我们的英雄。在移动时他将面向移动的方向并播放动画。当他站着不动的时候动画将会停止。你可以在这里试试效果：
 
 <iframe id="iframe_p7" width="240"
-  height="180" src="http://www.soulbrz.com/origin/html/p7.html"></iframe>
+  height="180" src="https://www.soulbrz.com/origin/html/p7.html"></iframe>
 
-[swf](http://www.gotoandplay.it/_articles/2004/02/tonypa/img/p07_1.swf) / [镜像](http://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p07_1.swf)
+[swf](https://www.gotoandplay.it/_articles/2004/02/tonypa/img/p07_1.swf) / [镜像](https://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p07_1.swf)
 
 本例中没有碰撞检测，因此英雄可以移动到舞以外，不过先不要担心，我们在接下来的章节中会处理这个问题。
 
 首先创建我们的英雄角色。新建 3 个影片剪辑，你将会使用一个影片剪辑作为向左或向右方向的移动动画（我使用向左移动的动画），一个向上移动，一个向下移动。在这些影片剪辑中设置你的移动动画。
 
-![pic](http://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p07_2.gif)
+![pic](https://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p07_2.gif)
 
 这些影片剪辑不需要写代码。
 
 现在编辑你的 `char` 影片剪辑，创建 5 个关键帧
 
-![pic](http://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p07_3.gif)
+![pic](https://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p07_3.gif)
 
 
 在第 1 个关键帧中放入 `char_up` 影片剪辑，第 2 个关键帧放入 `char_left` 影片剪辑，第 4 个放入 `char_right`，第 5 个放入 `char_down`。向左和向右的动作可以用相同的影片剪辑，只需要将其中一个水平翻转。现在，确认每个移动动画的示例拥有实例名 `char`。再检查一下关键帧 1 2 4 5，是否都命名为 `char`？别担心，如果你现在还不明白为什么这些动作放在这几个帧里，没关系，后续我们在移动的代码中会解释的。
 
-![pic](http://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p07_4.gif)
+![pic](https://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p07_4.gif)
 
 
 好了，到了代码时间。
@@ -542,7 +542,7 @@ ob.clip.gotoAndStop(dirx + diry * 2 + 3);
 
 与墙壁的碰撞将在下一章实现，那会非常有趣 :)
 
-你可以在这里下载本章节的代码：[fla](http://www.gotoandplay.it/_articles/2004/02/tonypa/keysToMove.fla) / [镜像](http://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/keysToMove.fla)
+你可以在这里下载本章节的代码：[fla](https://www.gotoandplay.it/_articles/2004/02/tonypa/keysToMove.fla) / [镜像](https://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/keysToMove.fla)
 
 # 墙壁碰撞
 
@@ -551,9 +551,9 @@ ob.clip.gotoAndStop(dirx + diry * 2 + 3);
 英雄只会行走却不会撞墙，这一点也不好玩。我们得让英雄感受一下硬邦邦砖墙或是别的什么不能行走的瓦片的力量。
 
 <iframe id="iframe_p8" width="240"
-  height="180" src="http://www.soulbrz.com/origin/html/p8.html"></iframe>
+  height="180" src="https://www.soulbrz.com/origin/html/p8.html"></iframe>
 
-[swf](http://www.gotoandplay.it/_articles/2004/02/tonypa/img/p08_1.swf) / [镜像](http://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p08_1.swf)
+[swf](https://www.gotoandplay.it/_articles/2004/02/tonypa/img/p08_1.swf) / [镜像](https://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p08_1.swf)
 
 在第一章中，我们给瓦片设置了 `walkable` 属性，当表示某位置瓦片的对象的 `walkable` 属性设置为 `false` 时，英雄将不能移动到那里。当设置为 `true` 时，可以移动到那（这就是“逻辑”，小学就学过了，不过有些人大学才学，可怜的娃）。
 
@@ -561,24 +561,24 @@ ob.clip.gotoAndStop(dirx + diry * 2 + 3);
 
 这是一个完美的碰撞的例子：
 
-![pic](http://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p08_2.gif)
+![pic](https://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p08_2.gif)
 
 
 英雄站在墙边，并且下一步就会进到那个方向的墙内部。我们不能让这种情况发生，所以，嘿，别动！但是这个世界并不完美，假如只是英雄身体的一部分碰撞了：
 
-![pic](http://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p08_3.gif)
+![pic](https://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p08_3.gif)
 
 
 这就需要我们计算英雄 4 角的碰撞。如果任何角（这个例子里是左下角）将会进入墙内，我们就让英雄停下。
 
 或者如果英雄还没有紧邻墙壁，但是下一步也会进入到墙内：
 
-![pic](http://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p08_4.gif)
+![pic](https://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p08_4.gif)
 
 
 那么我们就让英雄紧贴着墙：
 
-![pic](http://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p08_5.gif)
+![pic](https://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p08_5.gif)
 
 
 “噢不！”你也许要哭了，“这根本做不到！”别担心，其实并不难。
@@ -700,13 +700,13 @@ if (diry == -1)
 
 但是如果一个角即将进入墙内，`ob.upleft` 或者 `ob.upright` 是 `false` 时，我们把那个对象放在紧贴着墙的位置上。对于紧邻上方墙的 `char` 来说，他的中心将会被设置成距离下边框 `char.height` 这么远的地方（`char.height` 的值为 `char.clip.height / 2`，参考“英雄”那个章节）。
 
-![pic](http://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p08_6.gif)
+![pic](https://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p08_6.gif)
 
 `ob.ytile * game.tileH` 将会把角色中心放在两个图块的边线上，然后加上 `height` 属性的值来让他下移。使用同样的方法让 `moveChar` 函数处理向下（`diry == 1`）、向左（`dirx == -1`）、向右（`dirx == 1`）的情况。
 
 最后一行将角色的影片剪辑放置在计算后的坐标上，让角色显示正确的帧动画，计算角色新的中心点瓦片（`xtile`、`ytile`）。和上节一样，函数返回 `true`。
 
-你可以在这里下载本章节的代码：[fla](http://www.gotoandplay.it/_articles/2004/02/tonypa/hitTheWall.fla) / [镜像](http://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/hitTheWall.fla)
+你可以在这里下载本章节的代码：[fla](https://www.gotoandplay.it/_articles/2004/02/tonypa/hitTheWall.fla) / [镜像](https://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/hitTheWall.fla)
 
 # 开门
 
@@ -715,9 +715,9 @@ if (diry == -1)
 你能在一个房间里呆多久呢？你可以盯着同一张图片看多久？对，我们需要更多的房间来探索，也就是说，我们需要一个方法变更地图，从瓦片信息中创建新地图，然后把英雄放在正确的位置。
 
 <iframe id="iframe_p9" width="240"
-  height="180" src="http://www.soulbrz.com/origin/html/p9.html"></iframe>
+  height="180" src="https://www.soulbrz.com/origin/html/p9.html"></iframe>
 
-[swf](http://www.gotoandplay.it/_articles/2004/02/tonypa/img/p09_1.swf) / [镜像](http://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p09_1.swf)
+[swf](https://www.gotoandplay.it/_articles/2004/02/tonypa/img/p09_1.swf) / [镜像](https://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p09_1.swf)
 
 为了创建两个房间，我们要定义两个地图：
 
@@ -810,7 +810,7 @@ char.clip.gotoAndStop(char.frame);
 ```
 以上，创建一些地图然后和门玩耍吧。
 
-你可以在这里下载本章节的代码：[fla](http://www.gotoandplay.it/_articles/2004/02/tonypa/openDoors.fla) / [镜像](http://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/openDoors.fla)
+你可以在这里下载本章节的代码：[fla](https://www.gotoandplay.it/_articles/2004/02/tonypa/openDoors.fla) / [镜像](https://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/openDoors.fla)
 
 # 跳跃
 
@@ -819,9 +819,9 @@ char.clip.gotoAndStop(char.frame);
 让我们把我们的游戏从顶视角转为侧视角，然后增加跳跃功能。在这个例子中，我们会从侧面观察，我们的英雄可以用左右键移动，也可以用空格键跳跃，就像这样：
 
 <iframe id="iframe_p10" width="240"
-  height="180" src="http://www.soulbrz.com/origin/html/p10.html"></iframe>
+  height="180" src="https://www.soulbrz.com/origin/html/p10.html"></iframe>
 
-[swf](http://www.gotoandplay.it/_articles/2004/02/tonypa/img/p10_1.swf) / [镜像](http://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p10_1.swf)
+[swf](https://www.gotoandplay.it/_articles/2004/02/tonypa/img/p10_1.swf) / [镜像](https://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p10_1.swf)
 
 
 ## 基本跳跃
@@ -979,7 +979,7 @@ function fall (ob)
 
 为了修正不能站在空气中的情况。我们强迫英雄开始跳跃，将 `jump = true`，但是与按下空格键不同，我们将起始的跳跃速度设置为 0，这样英雄就开始下落了。
 
-你可以在这里下载本章节的代码：[fla](http://www.gotoandplay.it/_articles/2004/02/tonypa/jumping.fla) / [镜像](http://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/jumping.fla)
+你可以在这里下载本章节的代码：[fla](https://www.gotoandplay.it/_articles/2004/02/tonypa/jumping.fla) / [镜像](https://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/jumping.fla)
 
 # 拟态墙壁
 
@@ -988,17 +988,17 @@ function fall (ob)
 到目前为止，我们已经让英雄和墙壁有了碰撞，这很有趣，不过坚固的墙并不是我们可以创建的唯一一种墙。许多游戏中都有着一种“云”一样的墙，允许英雄从左右穿过它或跳到上边，但是当下落时，英雄会站在上面，看一下例子：
 
 <iframe id="iframe_p11" width="240"
-  height="180" src="http://www.soulbrz.com/origin/html/p11.html"></iframe>
+  height="180" src="https://www.soulbrz.com/origin/html/p11.html"></iframe>
 
-[swf](http://www.gotoandplay.it/_articles/2004/02/tonypa/img/p11_1.swf) / [镜像](http://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p11_1.swf)
+[swf](https://www.gotoandplay.it/_articles/2004/02/tonypa/img/p11_1.swf) / [镜像](https://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p11_1.swf)
 
 注意到区别了吗？让我们看一下图片，这是一个普通的固体墙壁瓦片，英雄从任何方向都不能进入。
 
-![pic](http://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p11_2.gif)
+![pic](https://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p11_2.gif)
 
 而这是一朵云，英雄可以从除了从上往下以外的任何方向进入这个瓦片。如果英雄蠢蠢地从上方进入，我们就把他放回到云顶：
 
-![pic](http://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p11_3.gif)
+![pic](https://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p11_3.gif)
 
 我们首先设定一些拥有 `cloud` 属性的云，如果哪个瓦片的 `cloud` 为 `true`，它很显然是云类型的瓦片。定义如下属性：
 
@@ -1067,7 +1067,7 @@ if (ob.downleft and ob.downright and !checkIfOnCloud (ob))
 
 和云、太阳还有星星一起玩耍吧 :)
 
-你可以在这里下载本章节的代码：[fla](http://www.gotoandplay.it/_articles/2004/02/tonypa/clouds.fla) / [镜像](http://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/clouds.fla)
+你可以在这里下载本章节的代码：[fla](https://www.gotoandplay.it/_articles/2004/02/tonypa/clouds.fla) / [镜像](https://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/clouds.fla)
 
 # 梯子
 
@@ -1076,13 +1076,13 @@ if (ob.downleft and ob.downright and !checkIfOnCloud (ob))
 梯子是平台游戏移动规则中很常见的一部分，英雄可以使用梯子来爬上爬下（我希望你知道这个事）。我们将会让角色能够在站在梯子旁时可以按上下键来攀爬：
 
 <iframe id="iframe_p11" width="240"
-  height="180" src="http://www.soulbrz.com/origin/html/p12.html"></iframe>
+  height="180" src="https://www.soulbrz.com/origin/html/p12.html"></iframe>
 
-[swf](http://www.gotoandplay.it/_articles/2004/02/tonypa/img/p12_1.swf) / [镜像](http://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p12_1.swf)
+[swf](https://www.gotoandplay.it/_articles/2004/02/tonypa/img/p12_1.swf) / [镜像](https://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p12_1.swf)
 
 虽然梯子看上去很简单，不过还是有很多事情是需要注意的，比如首先，梯子会有哪些类型？
 
-![pic](http://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p12_2.gif)
+![pic](https://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p12_2.gif)
 
 如图所示，有 4 种梯子的可能情况。A 的情况中梯子在不可行走的墙壁瓦片内部，英雄在 A 中可以做什么呢？他可以上下攀爬，但是由于卡在了墙内，他不能左右移动。你可以随便问一个卡在墙里的人，他们都说不好受。
 
@@ -1281,7 +1281,7 @@ ob.x = (ob.xtile * game.tileW) + game.tileW / 2;
 
 最后我们通过 `updateChar` 函数更新角色的实际位置。
 
-你可以在这里下载本章节的代码：[fla](http://www.gotoandplay.it/_articles/2004/02/tonypa/clouds.fla) / [镜像](http://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/clouds.fla)
+你可以在这里下载本章节的代码：[fla](https://www.gotoandplay.it/_articles/2004/02/tonypa/clouds.fla) / [镜像](https://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/clouds.fla)
 
 # 笨笨的敌人
 
@@ -1322,21 +1322,21 @@ ob.x = (ob.xtile * game.tileW) + game.tileW / 2;
 是时候看看如何添加斜坡了：
 
 <iframe id="iframe_p29" width="240"
-  height="180" src="http://www.soulbrz.com/origin/html/p29.html"></iframe>
+  height="180" src="https://www.soulbrz.com/origin/html/p29.html"></iframe>
 
-[swf](http://www.gotoandplay.it/_articles/2004/02/tonypa/img/p29_1.swf) / [镜像](http://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p29_1.swf)
+[swf](https://www.gotoandplay.it/_articles/2004/02/tonypa/img/p29_1.swf) / [镜像](https://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p29_1.swf)
 
 很多人问过我：“我要怎么让英雄在斜坡瓦片上行走呢？”，而我通常会回答道：“地球上为什么会有你们这些想让英雄走在斜坡上的人?只在方块上走路不开心吗？你的英雄就不能跳到更高的瓦片上吗？”，然后他们说：“不行，我就是要用斜坡！”
 
 可能你不知道斜坡瓦片是什么样的，在这个图片上，英雄（叫 Charlie 的鸭子）正站在斜坡上：
 
-![pic](http://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p29_2.gif)
+![pic](https://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p29_2.gif)
 
 （截图来自 Mike Wiering / Wiering Software 的 《CHARLIE II》）
 
 斜坡允许我们的英雄通过左右行走就走到在更高（或更低）的地方而不必跳跃（或下落）。因此，我们要讨论的斜坡将会是连接两个高度不同的瓦片的东西：
 
-![pic](http://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p29_3.gif)
+![pic](https://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p29_3.gif)
 
 当左侧图片的英雄想要移动到右边时，他不得不跳到更高的瓦片上，但是通过斜坡，右侧图片里的英雄不需要跳跃了。没错，如果我们的英雄可以跳，那右边的英雄也可以通过跳跃来移动到目的地，不过不会跳跃的英雄就会很开心，因为他们不用跳了。
 
@@ -1344,11 +1344,11 @@ ob.x = (ob.xtile * game.tileW) + game.tileW / 2;
 
 当我们想实现斜坡瓦片时，我们会面临很多问题（我觉得你不会希望遇到问题）。首先是英雄在斜坡上的站立点。如果你还记得的话，我们的英雄是矩形的，所有的碰撞都基于他的四个角，在实现斜坡时就不能使用这个思路了，不然很多情况下英雄将会双脚离地。作为代替，我们把英雄的中心放在斜坡地面上，让他的一部分进入地面。
 
-![pic](http://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p29_4.gif)
+![pic](https://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p29_4.gif)
 
 另外，游戏中的斜坡必须是讲一个瓦片的角和另一个的角连接起来的形式，在设置斜坡时必须非常小心，你不能使用其他角度和形状的斜坡，也不能设置奇怪的斜坡地图。
 
-![pic](http://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p29_5.gif)
+![pic](https://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p29_5.gif)
 
 ## 写代码实现吧
 
@@ -1422,7 +1422,7 @@ function checkForSlopes (ob, diry, dirx)
 
 `xpos` 是我们的英雄中心离当前图块左边缘的距离：
 
-![pic](http://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p29_6.gif)
+![pic](https://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/p29_6.gif)
 
 如果沿着斜坡上升，我们将给英雄抬升 `xpos` 的值，如果是下降，我们将抬升 `tileW - xpos` 的值。记住，如果你不用正方形的瓦片，你需要自己设置正确的 `xpos` 值。
 
@@ -1481,4 +1481,4 @@ else if (Key.isDown(Key.LEFT))
 
 如果英雄的 `onSlope` 属性为 `true`，我们要首先把它更新，计算新的 `y` 和 `ytile` 值（此时 `ob.y` 的值一直是当前格的中心 `y` 坐标 `ytile * game.tileH - ob.height`，只是影片剪辑被显示在了抬高 `addy` 后的位置，所以跳跃时先将 `ob.y` 也实际抬高）。
 
-你可以在这里下载本章节的代码：[fla](http://www.gotoandplay.it/_articles/2004/02/tonypa/slopes.fla) / [镜像](http://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/slopes.fla)
+你可以在这里下载本章节的代码：[fla](https://www.gotoandplay.it/_articles/2004/02/tonypa/slopes.fla) / [镜像](https://www.soulbrz.com/origin/imgs/tonypas-tile-based-tutorials/slopes.fla)

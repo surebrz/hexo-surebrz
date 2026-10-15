@@ -11,7 +11,7 @@ categories: JavaScript
 <div style="text-align:center;background-color:#1e576b">
     <canvas id="point_to_lines_pos_canvas"></canvas>
 </div>
-<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+<script src="https://code.jquery.com/jquery-1.8.3.js"></script>
  
 <script type="text/javascript">
 	/**

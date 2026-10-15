@@ -13,7 +13,7 @@ categories: HTML
     </div>
     <div style="margin:1em"><canvas id="faceCanvas"></canvas></div>
 </div>
-<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+<script src="https://code.jquery.com/jquery-1.8.3.js"></script>
  
 <script type="text/javascript">
     function drawFace(w, h) {
@@ -71,7 +71,7 @@ categories: HTML
     </div>
     <div style="margin:1em"><canvas id="faceCanvas"></canvas></div>
 </div>
-<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+<script src="https://code.jquery.com/jquery-1.8.3.js"></script>
  
 <script type="text/javascript">
     function drawFace(w, h) {

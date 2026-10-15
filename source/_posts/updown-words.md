@@ -16,7 +16,7 @@ categories: HTML
         <span id="result_reverse"></span>
     </div>
 </div>
-<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+<script src="https://code.jquery.com/jquery-1.8.3.js"></script>
  
 <script type="text/javascript">
     function drawWord(word) {
@@ -81,7 +81,7 @@ categories: HTML
 	</div>
 </body>
 
-<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+<script src="https://code.jquery.com/jquery-1.8.3.js"></script>
 <script type="text/javascript">
     function drawWord(word) {
 		let map = {

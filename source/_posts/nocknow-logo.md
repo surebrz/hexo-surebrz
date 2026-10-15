@@ -11,7 +11,7 @@ categories: HTML
 <body style="text-align:center;background-color:#1e576b">
     <canvas id="logoCanvas"></canvas>
 </body>
-<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+<script src="https://code.jquery.com/jquery-1.8.3.js"></script>
  
 <script type="text/javascript">
     function drawLogo() {
@@ -66,7 +66,7 @@ categories: HTML
 <div style="text-align:center;background-color:#1e576b">
     <canvas id="logoCanvas"></canvas>
 </div>
-<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+<script src="https://code.jquery.com/jquery-1.8.3.js"></script>
  
 <script type="text/javascript">
     function drawLogo() {
